@@ -1,0 +1,143 @@
+{
+    "trigger": {
+      "schedule": {
+        "interval": "5m"
+      }
+    },
+    "input": {
+      "chain": {
+        "inputs": [
+          {
+            "first": {
+              "search": {
+                "request": {
+                  "search_type": "query_then_fetch",
+                  "indices": [
+                    "<YOUR ELASTIC INDEX HERE>"
+                  ],
+                  "rest_total_hits_as_int": true,
+                  "body": {
+                    "size": 0,
+                    "query": {
+                      "bool": {
+                        "must": [
+                          { 
+                            "query_string": {
+                              "query": "<YOUR LUCENE QUERY HERE>",
+                              "analyze_wildcard": true,
+                              "time_zone": "America/New_York"
+                            }
+                          },
+                          {
+                            "range": {
+                              "@timestamp": {
+                                "gte": "now-5m",
+                                "lte": "now",
+                                "format": "epoch_millis"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    "aggs": {
+                        "chain": {
+                          "terms": {
+                            "field": "<YOUR ELASTIC FIELD>"
+                          }
+                        }
+                      }
+                  }
+                }
+              }
+            }
+          },
+          {
+            "second": {
+              "search": {
+                "request": {
+                  "search_type": "query_then_fetch",
+                  "indices": [
+                    "<YOUR ELASTIC INDEX HERE>"
+                  ],
+                  "rest_total_hits_as_int": true,
+                  "body": {
+                    "size": 0,
+                    "query": {
+                      "bool": {
+                        "must": [
+                          {
+                            "query_string": {
+                              "query": "<YOUR SECOND LUCENE QUERY HERE>",
+                              "analyze_wildcard": true,
+                              "time_zone": "America/New_York"
+                            }
+                          },
+                          {
+                            "range": {
+                              "@timestamp": {
+                                "gte": "now-5m",
+                                "lte": "now",
+                                "format": "epoch_millis"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    "aggs": {
+                        "chain": {
+                          "terms": {
+                            "field": "<YOUR ELASTIC FIELD>"
+                          }
+                        }
+                      }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "condition": {
+      "script": {
+        "source": "<YOUR PAINLESS CONDITION SCRIPT>",
+        "lang": "painless"
+      }
+    },
+    "transform": {
+      "script": {
+        "source": "<YOUR PAINLESS TRANSFORM SCRIPT>",
+        "lang": "painless"
+      }
+    },
+    "actions": {
+      "alert_manager_webhook_1": {
+        "webhook": {
+          "scheme": "http",
+          "host": "am-01.prod.alertmanager.dcsg.com",
+          "port": 9093,
+          "method": "post",
+          "path": "/api/v2/alerts",
+          "params": {},
+          "headers": {
+            "Content-Type": "application/json"
+          },
+          "body": "[{\"labels\":{\"alertname\":\"<ALERTNAME>\",\"L2_Alerts\":\"N\",\"org_name\":\"<ORG NAME>\",\"group_name\":\"<GROUP NAME>\"},\"annotations\":{\"summary\":\"<ALERT SUMMARY\",\"description\":\"<ALERT DESCRIPTION\",\"sopLink\":\"<ALERT SOP\"}}]"      }
+      },
+      "alert_manager_webhook_2": {
+        "webhook": {
+          "scheme": "http",
+          "host": "am-02.prod.alertmanager.dcsg.com",
+          "port": 9093,
+          "method": "post",
+          "path": "/api/v2/alerts",
+          "params": {},
+          "headers": {
+            "Content-Type": "application/json"
+          },
+          "body": "[{\"labels\":{\"alertname\":\"<ALERTNAME>\",\"L2_Alerts\":\"N\",\"org_name\":\"<ORG NAME>\",\"group_name\":\"<GROUP NAME>\"},\"annotations\":{\"summary\":\"<ALERT SUMMARY\",\"description\":\"<ALERT DESCRIPTION\",\"sopLink\":\"<ALERT SOP\"}}]"      }
+      }
+    }
+  }

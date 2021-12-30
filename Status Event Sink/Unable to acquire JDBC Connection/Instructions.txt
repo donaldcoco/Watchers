@@ -1,0 +1,15 @@
+Hi Phil & Don, 
+
+We need to setup an alert for co-status-event-sink for the below Exception:
+
+org.hibernate.exception.JDBCConnectionException
+
+Alert if the above error occurs even once within a 10 minute interval.
+
+Thanks
+Sakthi
+
+
+link from Sakthi:
+
+https://kibana.creelastic.dcsg.com/goto/51229ec0e41bc029d5774b837d4ba51a

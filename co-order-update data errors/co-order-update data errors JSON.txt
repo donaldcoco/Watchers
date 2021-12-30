@@ -1,0 +1,95 @@
+{
+  "trigger": {   
+    "schedule": {
+      "interval":"5m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "search_type": "query_then_fetch",
+        "indices": [   
+          "pcf_app_customer-order"
+        ],
+        "rest_total_hits_as_int": true,
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [],
+              "filter": [                           
+                {
+                  "bool": {
+                    "should": [
+                      {
+                        "match_phrase": {
+                          "message.text": "Error in sending data to kafka topic for key"
+                        }
+                      }
+                    ],
+                    "minimum_should_match": 1
+                  }
+                },
+                {
+                  "match_phrase": {
+                    "cf_app_name": {
+                      "query": "-co-order-update"
+                    }
+                  }
+                },
+                {
+                  "range": {
+                    "@timestamp": {
+                      "gte": "now-15m",
+                      "lte": "now",
+                      "format": "epoch_millis"
+                    }
+                  }
+                }
+              ],
+              "should": [],
+              "must_not": []
+            }
+          }
+        }
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "gte": 1
+      }
+    }
+  },
+  "actions": {
+    "alert_manager_webhook_1": {
+      "webhook": {
+        "scheme": "http",
+        "host": "am-01.prod.alertmanager.dcsg.com",
+        "port": 9093,
+        "method": "post",
+        "path": "/api/v2/alerts",
+        "params": {},
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": "[{\"labels\":{\"alertname\":\"co-order-update data errors\",\"L2_Alerts\":\"N\",\"org_name\":\"customer-order\",\"app_name\":\"co-order-update\",\"Priority\":\"Monitor\", \"link_to_kibana\":\"https://kibana.creelastic.dcsg.com/goto/51da60e24e85884de2bf01ce61db62e0\",\"supportGroup\":\"Tech-CustomerOrders\",\"sopLink\":\"Monitor app to make sure order are flowing\",\"to_cre\": \"Y\"},\"annotations\":{\"summary\":\"Check to see if orders are flowing through co-order-update.\",\"description\":\"Too many occurances of the error message: Error in sending data to kafka topic for key\"}}]"
+      }
+    },
+    "alert_manager_webhook_2": {
+      "webhook": {
+        "scheme": "http",
+        "host": "am-02.prod.alertmanager.dcsg.com",
+        "port": 9093,
+        "method": "post",
+        "path": "/api/v2/alerts",
+        "params": {},
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": "[{\"labels\":{\"alertname\":\"co-order-update data errors\",\"L2_Alerts\":\"N\",\"org_name\":\"customer-order\",\"app_name\":\"co-order-update\",\"Priority\":\"Monitor\", \"link_to_kibana\":\"https://kibana.creelastic.dcsg.com/goto/51da60e24e85884de2bf01ce61db62e0\",\"supportGroup\":\"Tech-CustomerOrders\",\"sopLink\":\"Monitor app to make sure order are flowing\",\"to_cre\": \"Y\"},\"annotations\":{\"summary\":\"Check to see if orders are flowing through co-order-update.\",\"description\":\"Too many occurances of the error message: Error in sending data to kafka topic for key\"}}]"
+      }
+    }
+  }
+}

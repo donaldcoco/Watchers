@@ -1,0 +1,10 @@
+cf_app_name: "*sync-order-service*" and message.text:"Error while connecting to kafka server for wcsIdentifier"
+
+
+more than>10 for 5 minutes 
+
+restart bad instance
+
+xmatter team to let them know
+
+        "body": "[{\"labels\":{\"alertname\":\"Sync-Order-Service wcsIdentifier Errors\",\"L2_Alerts\":\"Y\",\"Priority\":\"Medium\",\"org_name\":\"customer-order\",\"app_name\":\"sync-order-service\", \"link_to_kibana\":\"https://kibana.creelastic.dcsg.com/goto/75e5b93ec054548f87910460241c369d\",\"supportGroup\":\"Tech-CustomerOrders\",\"sopLink\":\"X-Matters customer-order on call and restart the offending instance\",\"to_cre\": \"Y\"},\"annotations\":{\"summary\":\"Too many errors in the wcsIdendifier over the last 5 minutes\",\"description\":\"The wcsIdentifier has had more than 10 errors over the last 5 minutes.\"}}]"

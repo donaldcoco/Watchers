@@ -1,0 +1,7 @@
+
+
+
+
+
+
+        "body": "[{\"labels\":{\"alertname\":\"co-order-update data errors\",\"L2_Alerts\":\"N\",\"org_name\":\"customer-order\",\"app_name\":\"co-order-update\",\"Priority\":\"Monitor\", \"link_to_kibana\":\"https://kibana.creelastic.dcsg.com/goto/51da60e24e85884de2bf01ce61db62e0\",\"supportGroup\":\"Tech-CustomerOrders\",\"sopLink\":\"Monitor app to make sure order are flowing\",\"to_cre\": \"Y\"},\"annotations\":{\"summary\":\"Check to see if orders are flowing through co-order-update.\",\"description\":\"Too many occurances of the error message "Error in sending data to kafka topic for key"\"}}]"

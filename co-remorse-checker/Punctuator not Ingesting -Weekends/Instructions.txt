@@ -1,0 +1,33 @@
+[2:57 PM] Rajamani Kurup, Mahesh
+yes for now. 
+ like 1
+
+[2:57 PM] Rajamani Kurup, Mahesh
+when we do it for DSG , we can change it to run everyday all the time
+ like 1
+
+[2:58 PM] Rajamani Kurup, Mahesh
+is it possibl to create a soft alert , just to see the occurrence in weekends ? 
+
+[2:58 PM] Rajamani Kurup, Mahesh
+with 7 am to 8 pm. not alerting L2. 
+
+[2:59 PM] Rajamani Kurup, Mahesh
+over last 15 mins , want to see if its too much
+
+[3:00 PM] Coco, Donald J
+so to be clear i understand the one i am working on now is going to L2 m-f 7a-8p checking for at least 1 over the last 5 mins. 
+
+[3:01 PM] Coco, Donald J
+and you are asking if i can also create a soft alert that doesnt go to L2 on the weekends from 7a-8p checking for 1 over the last 15?
+
+[3:01 PM] Rajamani Kurup, Mahesh
+yes
+
+[3:01 PM] Coco, Donald J
+yes i can . 
+
+[3:02 PM] Coco, Donald J
+i will duplicate it and it will have weekend attached to the name and ill remove l2
+ like 1
+

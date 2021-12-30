@@ -1,0 +1,115 @@
+{
+  "trigger": {                                           {{"_comment":set the time frame you need. Standard: "trigger" : {"schedule" : {      "interval" : "5m"   }}}}  
+    "schedule": {
+      "daily": {
+        "at":[
+          {
+            "hour": [
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              0,
+              1
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "search_type": "query_then_fetch",
+        "indices": [   
+          "pcf_app_customer-returns"                                    {{"_comment":set the pcf_app space to the correct one}}
+        ],
+        "rest_total_hits_as_int": true,
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {                                                   {{"_comment": search conditions go here pulled from the kibana query }}
+              "must": [],
+              "filter": [                           
+                {
+                  "bool": {
+                    "should": [
+                      {
+                        "match_phrase": {
+                          "message.text": "Successfully created record with eomToWcsUniqueId"
+                        }
+                      }
+                    ],
+                    "minimum_should_match": 1
+                  }
+                },
+                {
+                  "match_phrase": {
+                    "cf_app_name": {
+                      "query": "-returns-processor"
+                    }
+                  }
+                },
+                {
+                  "range": {                                            {{timeframe on the query this one is now and the last hour}}
+                    "@timestamp": {
+                      "gte": "now-1h",
+                      "lte": "now",
+                      "format": "epoch_millis"
+                    }
+                  }
+                }
+              ],
+              "should": [],
+              "must_not": []
+            }
+          }
+        }
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {                                          {{what is the threshold for number times this event should happen or not}}
+        "lt": 1
+      }
+    }
+  },
+  "actions": {
+    "alert_manager_webhook_1": {
+      "webhook": {
+        "scheme": "http",
+        "host": "am-01.prod.alertmanager.dcsg.com",
+        "port": 9093,
+        "method": "post",
+        "path": "/api/v2/alerts",
+        "params": {},
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": "[{\"labels\":{\"alertname\":\"No DB Returns in and hour\",\"L2_Alerts\":\"Y\",\"org_name\":\"customer-order\",\"app_name\":\"returns-processor\", \"link_to_kibana\":\"https://kibana.creelastic.dcsg.com/goto/a8bf7d729195aaa4ebc782e94d5c33ee\",\"supportGroup\":\"Tech-CustomerOrders\",\"sopLink\":\"X-Matters customer-returns on call\",\"to_cre\": \"Y\"},\"annotations\":{\"summary\":\"Check to see if returns are flowing through returns-processor and saving to the returns-db. If not, create an urgent ticket to fix ASAP.\",\"description\":\"Warning: no return has been written to the returns-db in the past hour.\"}}]"
+      }
+    },
+    "alert_manager_webhook_2": {
+      "webhook": {
+        "scheme": "http",
+        "host": "am-02.prod.alertmanager.dcsg.com",
+        "port": 9093,
+        "method": "post",
+        "path": "/api/v2/alerts",
+        "params": {},
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": "[{\"labels\":{\"alertname\":\"No DB Returns in and hour\",\"L2_Alerts\":\"Y\",\"org_name\":\"customer-order\",\"app_name\":\"returns-processor\", \"link_to_kibana\":\"https://kibana.creelastic.dcsg.com/goto/a8bf7d729195aaa4ebc782e94d5c33ee\",\"supportGroup\":\"Tech-CustomerOrders\",\"sopLink\":\"Check to see if returns are flowing through returns-processor and saving to the returns-db. If not, create an urgent ticket to fix ASAP.\",\"to_cre\": \"Y\"},\"annotations\":{\"summary\":\"No DB Returns in an hour\",\"description\":\"Warning: no return has been written to the returns-db in the past hour.\"}}]"
+      }
+    }
+  }
+}

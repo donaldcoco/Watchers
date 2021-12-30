@@ -1,0 +1,16 @@
+https://jira.dcsg.com/projects/TSD/queues/custom/219/TSD-841902
+
+
+String Pattern
+“Successfully created record with eomToWcsUniqueId”
+
+this is to alert when that string is NOT present in ELK within a 1 hour timeframe
+
+Alert would say “warning: no return has been written to the returns-db in the past hour”
+
+
+
+
+
+
+

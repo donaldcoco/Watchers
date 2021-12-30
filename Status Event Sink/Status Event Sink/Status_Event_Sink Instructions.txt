@@ -1,0 +1,11 @@
+Can we create an alert for "Status Events - Minimum Processing Limit Reached"?
+
+Alert if the log below is < 100 within a 30 minute window Between 6 am - Midnight?
+
+
+Here is the kibana link:
+https://kibana.creelastic.dcsg.com/goto/25cdd25d530556fd27745f886d243efe
+
+
+
+Please adjust the time:  6 am to 9 pm

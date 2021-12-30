@@ -1,0 +1,95 @@
+{
+  "trigger": {
+    "schedule": {
+      "cron": "0 * 13 ? * Mon-Fri"        [<seconds> <minutes> <hours> <day_of_month> <month> <day_of_week> [year] https://www.elastic.co/guide/en/elasticsearch/reference/current/cron-expressions.html ]
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "search_type": "query_then_fetch",
+        "indices": [
+          "pcf_app_customer-order"
+        ],
+        "rest_total_hits_as_int": true,
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [],
+              "filter": [
+                {
+                  "bool": {
+                    "should": [
+                      {
+                        "match_phrase": {
+                          "Status_Code": "200"
+                        }
+                      }
+                    ],
+                    "minimum_should_match": 1
+                  }
+                },
+                {
+                  "match_phrase": {
+                    "cf_app_name": {
+                      "query": "co-calculate-tax"
+                    }
+                  }
+                },
+                {
+                  "range": {
+                    "@timestamp": {
+                      "gte": "now-1m",
+                      "lte": "now",
+                      "format": "epoch_millis"
+                    }
+                  }
+                }
+              ],
+              "should": [],
+              "must_not": []
+            }
+          }
+        }
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "lt": 1
+      }
+    }
+  },
+  "actions": {
+    "alert_manager_webhook_1": {
+      "webhook": {
+        "scheme": "http",
+        "host": "am-01.prod.alertmanager.dcsg.com",
+        "port": 9093,
+        "method": "post",
+        "path": "/api/v2/alerts",
+        "params": {},
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": "[{\"labels\":{\"alertname\":\"This is for testing purposes only\",\"L2_Alerts\":\"N\",\"org_name\":\"customer-order\",\"app_name\":\"Test\", \"link_to_kibana\":\"https://kibana.creelastic.dcsg.com/goto/f90644058474b4565a1f5828d62d50a7\",\"supportGroup\":\"Don Coco\",\"annotations\":{\"summary\":\"Checking out a new schedule\",\"description\":\"There is not an actual alert. I am testing a new watcher schedule and need to see how it works\"}}]"
+      }
+    },
+    "alert_manager_webhook_2": {
+      "webhook": {
+        "scheme": "http",
+        "host": "am-02.prod.alertmanager.dcsg.com",
+        "port": 9093,
+        "method": "post",
+        "path": "/api/v2/alerts",
+        "params": {},
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": "[{\"labels\":{\"alertname\":\"This is for testing purposes only\",\"L2_Alerts\":\"N\",\"org_name\":\"customer-order\",\"app_name\":\"Test\", \"link_to_kibana\":\"https://kibana.creelastic.dcsg.com/goto/f90644058474b4565a1f5828d62d50a7\",\"supportGroup\":\"Don Coco\",\"annotations\":{\"summary\":\"Checking out a new schedule\",\"description\":\"There is not an actual alert. I am testing a new watcher schedule and need to see how it works\"}}]"
+      }
+    }
+  }
+}

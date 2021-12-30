@@ -1,0 +1,92 @@
+{
+	"trigger": {
+		"schedule": {
+			"interval": "10m"
+		}
+	},
+	"input": {
+		"search": {
+			"request": {
+				"search_type": "query_then_fetch",
+				"indices": [
+					"pcf_app_customer-order"
+				],
+				"rest_total_hits_as_int": true,
+				"body": {
+					"size": 0,
+					"query": {
+						"bool": {
+							"must": [],
+							"filter": [{
+									"bool": {
+										"should": [{
+											"match_phrase": {
+												"thrown.cause.message": "Unable to acquire JDBC Connection"
+											}
+										}],
+										"minimum_should_match": 1
+									}
+								},
+								{
+									"match_phrase": {
+										"cf_app_name": {
+											"query": "-co-status-event-sink"
+										}
+									}
+								},
+								{
+									"range": {
+										"@timestamp": {
+											"gte": "now-10m",
+											"lte": "now",
+											"format": "epoch_millis"
+										}
+									}
+								}
+							],
+							"should": [],
+							"must_not": []
+						}
+					}
+				}
+			}
+		}
+	},
+	"condition": {
+		"compare": {
+			"ctx.payload.hits.total": {
+				"gt": 0
+			}
+		}
+	},
+	"actions": {
+		"alert_manager_webhook_1": {
+			"webhook": {
+				"scheme": "http",
+				"host": "am-01.prod.alertmanager.dcsg.com",
+				"port": 9093,
+				"method": "post",
+				"path": "/api/v2/alerts",
+				"params": {},
+				"headers": {
+					"Content-Type": "application/json"
+				},
+				"body": "[{\"labels\":{\"alertname\":\"Unable to acquire JDBC Connection\",\"L2_Alerts\":\"Y\",\"org_name\":\"customer-order\",\"app_name\":\"co-status-event-sink\", \"link_to_kibana\":\"https://kibana.creelastic.dcsg.com/goto/de8f1ede4968e71fc9b287547caf3829\",\"supportGroup\":\"Tech-CustomerOrders\",\"to_cre\": \"Y\"},\"annotations\":{\"summary\":\"Unable to acquire JDBC Connection\",\"description\":\"Status Events - Error processing status update\"}}]"
+			}
+		},
+		"alert_manager_webhook_2": {
+			"webhook": {
+				"scheme": "http",
+				"host": "am-02.prod.alertmanager.dcsg.com",
+				"port": 9093,
+				"method": "post",
+				"path": "/api/v2/alerts",
+				"params": {},
+				"headers": {
+					"Content-Type": "application/json"
+				},
+				"body": "[{\"labels\":{\"alertname\":\"Unable to acquire JDBC Connection\",\"L2_Alerts\":\"Y\",\"org_name\":\"customer-order\",\"app_name\":\"co-status-event-sink\", \"link_to_kibana\":\"https://kibana.creelastic.dcsg.com/goto/de8f1ede4968e71fc9b287547caf3829\",\"supportGroup\":\"Tech-CustomerOrders\",\"to_cre\": \"Y\"},\"annotations\":{\"summary\":\"Unable to acquire JDBC Connection\",\"description\":\"Status Events - Error processing status update\"}}]"
+			}
+		}
+	}
+}

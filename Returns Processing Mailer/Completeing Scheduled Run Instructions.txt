@@ -1,0 +1,5 @@
+Add an alert for the customer-returns-return-processing-mailer
+
+Expect "Completing scheduled run." at least once per hour
+
+https://kibana.creelastic.dcsg.com/goto/e157cb2a52f62162165d516af9637ec0

@@ -1,0 +1,117 @@
+{
+  "trigger": {
+    "schedule": {
+      "daily": {
+        "at": [
+          {
+            "hour": [
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              0
+            ],
+            "minute": [
+              0,
+              30
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "search_type": "query_then_fetch",
+        "indices": [
+          "pcf_app_customer-order"
+        ],
+        "rest_total_hits_as_int": true,
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [],
+              "filter": [
+                {
+                  "bool": {
+                    "should": [
+                      {
+                        "match_phrase": {
+                          "message.text": "Writing key="
+                        }
+                      }
+                    ],
+                    "minimum_should_match": 1
+                  }
+                },
+                {
+                  "match_phrase": {
+                    "cf_app_name": {
+                      "query": "-co-status-event-sink"
+                    }
+                  }
+                },
+                {
+                  "range": {
+                    "@timestamp": {
+                      "gte": "now-30m",
+                      "lte": "now",
+                      "format": "epoch_millis"
+                    }
+                  }
+                }
+              ],
+              "should": [],
+              "must_not": []
+            }
+          }
+        }
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "lte": 100
+      }
+    }
+  },
+  "actions": {
+    "alert_manager_webhook_1": {
+      "webhook": {
+        "scheme": "http",
+        "host": "am-01.prod.alertmanager.dcsg.com",
+        "port": 9093,
+        "method": "post",
+        "path": "/api/v2/alerts",
+        "params": {},
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": "[{\"labels\":{\"alertname\":\"customer-order-status-event-sink\",\"L2_Alerts\":\"N\",\"Priority\":\"Monitor\",\"org_name\":\"customer-order\",\"app_name\":\"co-status-event-sink\", \"link_to_kibana\":\"https://kibana.creelastic.dcsg.com/goto/e1c0bd7b941d9edcce25aebf2bbe793b\",\"supportGroup\":\"Tech-CustomerOrders\",\"sopLink\":\"Check to see if orders are flowing going to EOM if they are create an incident ticket and submit it to Tech-CustomerOrders if orders are not flowing x-matters Tech-CustomerOrders \",\"to_cre\": \"Y\"},\"annotations\":{\"summary\":\"co-status-event-sink\",\"description\":\"Status Events - Minimum Processing Limit Reached\"}}]"
+      }
+    },
+    "alert_manager_webhook_2": {
+      "webhook": {
+        "scheme": "http",
+        "host": "am-02.prod.alertmanager.dcsg.com",
+        "port": 9093,
+        "method": "post",
+        "path": "/api/v2/alerts",
+        "params": {},
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": "[{\"labels\":{\"alertname\":\"customer-order-status-event-sink\",\"L2_Alerts\":\"N\",\"Priority\":\"Monitor\",\"org_name\":\"customer-order\",\"app_name\":\"co-status-event-sink\", \"link_to_kibana\":\"https://kibana.creelastic.dcsg.com/goto/e1c0bd7b941d9edcce25aebf2bbe793b\",\"supportGroup\":\"Tech-CustomerOrders\",\"sopLink\":\"Check to see if orders are flowing going to EOM if they are create an incident ticket and submit it to Tech-CustomerOrders if orders are not flowing x-matters Tech-CustomerOrders \",\"to_cre\": \"Y\"},\"annotations\":{\"summary\":\"co-status-event-sink\",\"description\":\"Status Events - Minimum Processing Limit Reached\"}}]"
+      }
+    }
+  }
+}
