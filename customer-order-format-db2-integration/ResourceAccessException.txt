@@ -80,7 +80,7 @@
         "headers": {
           "Content-Type": "application/json"
         },
-        "body": "[{\"labels\":{\"alertname\":\"Error Parsing for Key\",\"L2_Alerts\":\"Y\",\"org_name\":\"customer-order\",\"app_name\":\"co-remorse-checker\", \"link_to_kibana\":\"https://kibana.creelastic.dcsg.com/goto/8a47f90dacf706040537fa4c4fe932e9\",\"supportGroup\":\"Tech-CustomerOrders\",\"sopLink\":\"https://confluence.dcsg.com/display/PTCOM/Remorse+Process\",\"to_cre\": \"Y\"},\"annotations\":{\"summary\":\"Check to see if orders are flowing through co-remorse-checker If not, please restart the affected instance and X-Matters if it doesn't correct itself.\",\"description\":\"Error parsing remorse event for key.\"}}]"
+        "body": "[{\"labels\":{\"alertname\":\"ResourceAccessException\",\"L2_Alerts\":\"Y\",\"org_name\":\"customer-order\",\"app_name\":\"customer-order-format-db2-integration\", \"link_to_kibana\":\"https://kibana.creelastic.dcsg.com/goto/1ba3b1bc288e5ff7555aec6a16b050a2\",\"supportGroup\":\"Tech-CustomerOrders\",\"sopLink\":\"check to make sure customer-order-format-db2-integration is stopped in ap01 and only running in vp01. If it is only running in vp01, but these errors are still happening, reach out to Tech-CustomerOrders\",\"to_cre\": \"Y\"},\"annotations\":{\"summary\":\"customer-order-format-db2-integration should only be running in VP01 please make sure that AP01 is shut down if it is and errors persist contact Tech-CustomerOrders\",\"description\":\"More than ten ResourceAccessExceptions in the last hour\"}}]"
       }
     },
     "alert_manager_webhook_2": {
@@ -94,7 +94,7 @@
         "headers": {
           "Content-Type": "application/json"
         },
-        "body": "[{\"labels\":{\"alertname\":\"Error Parsing for Key\",\"L2_Alerts\":\"Y\",\"org_name\":\"customer-order\",\"app_name\":\"co-remorse-checker\", \"link_to_kibana\":\"https://kibana.creelastic.dcsg.com/goto/8a47f90dacf706040537fa4c4fe932e9\",\"supportGroup\":\"Tech-CustomerOrders\",\"sopLink\":\"https://confluence.dcsg.com/display/PTCOM/Remorse+Process\",\"to_cre\": \"Y\"},\"annotations\":{\"summary\":\"Check to see if orders are flowing through co-remorse-checker If not, please restart the affected instance and X-Matters if it doesn't correct itself.\",\"description\":\"Error parsing remorse event for key.\"}}]"
+        "body": "[{\"labels\":{\"alertname\":\"ResourceAccessException\",\"L2_Alerts\":\"Y\",\"org_name\":\"customer-order\",\"app_name\":\"customer-order-format-db2-integration\", \"link_to_kibana\":\"https://kibana.creelastic.dcsg.com/goto/1ba3b1bc288e5ff7555aec6a16b050a2\",\"supportGroup\":\"Tech-CustomerOrders\",\"sopLink\":\"check to make sure customer-order-format-db2-integration is stopped in ap01 and only running in vp01. If it is only running in vp01, but these errors are still happening, reach out to Tech-CustomerOrders\",\"to_cre\": \"Y\"},\"annotations\":{\"summary\":\"customer-order-format-db2-integration should only be running in VP01 please make sure that AP01 is shut down if it is and errors persist contact Tech-CustomerOrders\",\"description\":\"More than ten ResourceAccessExceptions in the last hour\"}}]"
       }
     }
   }
