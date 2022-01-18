@@ -1,0 +1,43 @@
+{
+  "trigger": {
+    "schedule": {
+      "daily": {
+        "at": [
+          "05:00"
+        ]
+      }
+    }
+  },
+  "input": {
+    "none": {}
+  },
+  "condition": {
+    "always": {}
+  },
+  "actions": {
+    "email_admin": {
+      "email": {
+        "profile": "standard",
+        "attachments": {
+          "Curbside Returns Report.csv": {
+            "reporting": {
+              "url": "https://kibana.creelastic.dcsg.com/api/reporting/generate/csv?jobParams=(conflictedTypesFields:!(),fields:!(%27@timestamp%27,message.crMessage,message.crSku,message.crWarehouse,message.crQuantity,message.crDksId,message.crDistributionOrderNumber,message.crCustomerOrderNumber,message.crSource),indexPatternId:f6691800-bb03-11ea-be4e-69d468af2203,metaFields:!(_source,_id,_type,_index,_score),searchRequest:(body:(_source:(excludes:!(),includes:!(%27@timestamp%27,message.crMessage,message.crSku,message.crWarehouse,message.crQuantity,message.crDksId,message.crDistributionOrderNumber,message.crCustomerOrderNumber,message.crSource)),docvalue_fields:!(),query:(bool:(filter:!((bool:(filter:!((bool:(minimum_should_match:1,should:!((match_phrase:(cf_org_name:customer-returns))))),(bool:(filter:!((bool:(minimum_should_match:1,should:!((match_phrase:(cf_space_name:prod))))),(bool:(filter:!((bool:(minimum_should_match:1,should:!((match_phrase:(cf_app_name:%27*returns-processor%27))))),(bool:(minimum_should_match:1,should:!((bool:(minimum_should_match:1,should:!((match_phrase:(message.crMessage:FAILURE))))),(bool:(minimum_should_match:1,should:!((match_phrase:(message.crMessage:SUCCESS))))))))))))))))),(range:(%27@timestamp%27:(format:strict_date_optional_time,gte:now-24h,lte:now)))),must:!(),must_not:!(),should:!())),script_fields:(),sort:!((%27@timestamp%27:(order:desc,unmapped_type:boolean))),stored_fields:!(%27@timestamp%27,message.crMessage,message.crSku,message.crWarehouse,message.crQuantity,message.crDksId,message.crDistributionOrderNumber,message.crCustomerOrderNumber,message.crSource),version:!t),index:pcf_app_customer-returns),title:Returns-Returns-Processor-SUCCESS%2FFAILURE,type:search)",
+              "retries": 5,
+              "interval": "15s",
+              "auth": {
+                "basic": {
+                  "username": "dsg_reporting_user",
+                  "password": "::es_encrypted::VJxW6l/5U6b2VhU0mn/He/3icRPyUM/WMZi6"
+                }
+              }
+            }
+          }
+        },
+        "to": [
+          "'<Donald.Coco@dcsg.com>'"
+        ],
+        "subject": "Curbside Customer Returns-Daily Success/Failures"
+      }
+    }
+  }
+}

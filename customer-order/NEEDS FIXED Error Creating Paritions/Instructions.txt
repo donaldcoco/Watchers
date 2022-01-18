@@ -1,0 +1,6 @@
+if the error log "error creating partition" is found in the customer-order space (specifically in apps customer-order or co-auth0-sink), then send an alert to the Athlete Order channel
+if possible, also look for log "already exists" in the same log and if that's present, don't alert.
+
+SOP - engineer on AO should review exception thrown in kibana logs to potentially fix for next month (runs on a cron schedule the first day of every month) and manually create partition for the failed month.
+
+L2 - no
