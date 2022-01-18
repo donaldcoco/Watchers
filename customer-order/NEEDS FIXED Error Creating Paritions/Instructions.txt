@@ -4,3 +4,6 @@ if possible, also look for log "already exists" in the same log and if that's pr
 SOP - engineer on AO should review exception thrown in kibana logs to potentially fix for next month (runs on a cron schedule the first day of every month) and manually create partition for the failed month.
 
 L2 - no
+
+url to what Returns actually wants the watcher to monitor: 
+https://crekibananp.dcsg.com/app/discover#/?_g=(filters:!(),refreshInterval:(pause:!t,value:0),time:(from:'2022-01-12T05:00:00.000Z',to:'2022-01-14T04:30:00.000Z'))&_a=(columns:!(cf_app_name,level,message.text,thrown.cause.message),filters:!(),index:'949d9790-3c69-11ea-9e37-798935b6eb99',interval:auto,query:(language:lucene,query:'cf_app_name:%22customer-order-perf%22%20or%20%22co-auth0-sink%22%20AND%20NOT%20level:%22info%22%20AND%20message.text:%22error%20creating%20partition%22%20AND%20NOT%20thrown.cause.message:%22already%20exists%22'),sort:!(!('@timestamp',desc)))
