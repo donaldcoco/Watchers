@@ -1,94 +1,110 @@
 {
-  "trigger": {
-    "schedule": {
-      "cron": "0 * * ? * *"  
-    }
-  },
-  "input": {
-    "search": {
-      "request": {
-        "search_type": "query_then_fetch",
-        "indices": [   
-          "pcf_app_customer-order"                                   
-        ],
-        "rest_total_hits_as_int": true,
-        "body": {
-          "size": 0,
-          "query": {
-            "bool": {                                                  
-              "must": [],
-              "filter": [                           
-                {
-                  "bool": {
-                    "should": [
-                      {
-                        "match_phrase": {
-                          "message.text": "Error parsing remorse event for key"
+    "trigger": {
+        "schedule": {
+          "cron": "0 * * ? * *"  
+        }
+    },
+    "input": {
+      "search": {
+        "request": {
+          "search_type": "query_then_fetch",
+          "indices": [   
+            "pcf_app_customer-order"
+          ],
+          "rest_total_hits_as_int": true,
+          "body": {
+            "size": 0,
+            "query": {
+              "bool": {
+                "must": [],
+                "filter": [
+                  {
+                    "bool": {
+                      "should": [
+                        {
+                          "match_phrase": {
+                            "message.text":"error creating partition"
+                          }
+                        },
+                        {
+                            "match_phrase":{
+                                "cf_app_name":"-customer-order"
+                            }
+                        },
+                        {
+                            "match_phrase":{
+                                "cf_app_name":"-co-auth0-sink"
+                            }
                         }
+                      ],
+                      "minimum_should_match": 2,
+                      "must_not":[
+                        {
+                            "match_phrase":{
+                                "level":"info"
+                            }
+                        },
+                        {
+                            "match_phrase":{
+                                "thrown.cause.message":"already exists"
+                            }
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "range": {
+                      "@timestamp": {
+                        "gte": "now-1h",
+                        "lte": "now",
+                        "format": "epoch_millis"
                       }
-                    ],
-                    "minimum_should_match": 1
-                  }
-                },
-                {
-                  "match_phrase": {
-                    "cf_app_name": {
-                      "query": "co-remorse-checker"
                     }
                   }
-                },
-                {
-                  "range": {                                            
-                    "@timestamp": {
-                      "gte": "now-5m",
-                      "format": "epoch_millis"
-                    }
-                  }
-                }
-              ],
-              "should": [],
-              "must_not": []
+                ],
+                "should": [],
+                "must_not": []
+              }
             }
           }
         }
       }
-    }
-  },
-  "condition": {
-    "compare": {
-      "ctx.payload.hits.total": {                                          
-        "gt": 0
-      }
-    }
-  },
-  "actions": {
-    "alert_manager_webhook_1": {
-      "webhook": {
-        "scheme": "http",
-        "host": "am-01.prod.alertmanager.dcsg.com",
-        "port": 9093,
-        "method": "post",
-        "path": "/api/v2/alerts",
-        "params": {},
-        "headers": {
-          "Content-Type": "application/json"
-        },
-        "body": "[{\"labels\":{\"alertname\":\"Error Parsing for Key\",\"L2_Alerts\":\"Y\",\"org_name\":\"customer-order\",\"app_name\":\"co-remorse-checker\", \"link_to_kibana\":\"https://kibana.creelastic.dcsg.com/goto/8a47f90dacf706040537fa4c4fe932e9\",\"supportGroup\":\"Tech-CustomerOrders\",\"sopLink\":\"https://confluence.dcsg.com/display/PTCOM/Remorse+Process\",\"to_cre\": \"Y\"},\"annotations\":{\"summary\":\"Check to see if orders are flowing through co-remorse-checker If not, please restart the affected instance and X-Matters if it doesn't correct itself.\",\"description\":\"Error parsing remorse event for key.\"}}]"
+    },
+    "condition": {
+      "compare": {
+        "ctx.payload.hits.total": {
+          "lt": 1
+        }
       }
     },
-    "alert_manager_webhook_2": {
-      "webhook": {
-        "scheme": "http",
-        "host": "am-02.prod.alertmanager.dcsg.com",
-        "port": 9093,
-        "method": "post",
-        "path": "/api/v2/alerts",
-        "params": {},
-        "headers": {
-          "Content-Type": "application/json"
-        },
-        "body": "[{\"labels\":{\"alertname\":\"Error Parsing for Key\",\"L2_Alerts\":\"Y\",\"org_name\":\"customer-order\",\"app_name\":\"co-remorse-checker\", \"link_to_kibana\":\"https://kibana.creelastic.dcsg.com/goto/8a47f90dacf706040537fa4c4fe932e9\",\"supportGroup\":\"Tech-CustomerOrders\",\"sopLink\":\"https://confluence.dcsg.com/display/PTCOM/Remorse+Process\",\"to_cre\": \"Y\"},\"annotations\":{\"summary\":\"Check to see if orders are flowing through co-remorse-checker If not, please restart the affected instance and X-Matters if it doesn't correct itself.\",\"description\":\"Error parsing remorse event for key.\"}}]"
+    "actions": {
+      "alert_manager_webhook_1": {
+        "webhook": {
+          "scheme": "http",
+          "host": "am-01.prod.alertmanager.dcsg.com",
+          "port": 9093,
+          "method": "post",
+          "path": "/api/v2/alerts",
+          "params": {},
+          "headers": {
+            "Content-Type": "application/json"
+          },
+          "body": "[{\"labels\":{\"alertname\":\"No DB Returns in and hour\",\"L2_Alerts\":\"Y\",\"org_name\":\"customer-order\",\"app_name\":\"returns-processor\", \"link_to_kibana\":\"https://kibana.creelastic.dcsg.com/goto/a8bf7d729195aaa4ebc782e94d5c33ee\",\"supportGroup\":\"Tech-CustomerOrders\",\"sopLink\":\"X-Matters customer-returns on call\",\"to_cre\": \"Y\"},\"annotations\":{\"summary\":\"Check to see if returns are flowing through returns-processor and saving to the returns-db. If not, create an urgent ticket to fix ASAP.\",\"description\":\"Warning: no return has been written to the returns-db in the past hour.\"}}]"
+        }
+      },
+      "alert_manager_webhook_2": {
+        "webhook": {
+          "scheme": "http",
+          "host": "am-02.prod.alertmanager.dcsg.com",
+          "port": 9093,
+          "method": "post",
+          "path": "/api/v2/alerts",
+          "params": {},
+          "headers": {
+            "Content-Type": "application/json"
+          },
+          "body": "[{\"labels\":{\"alertname\":\"No DB Returns in and hour\",\"L2_Alerts\":\"Y\",\"org_name\":\"customer-order\",\"app_name\":\"returns-processor\", \"link_to_kibana\":\"https://kibana.creelastic.dcsg.com/goto/a8bf7d729195aaa4ebc782e94d5c33ee\",\"supportGroup\":\"Tech-CustomerOrders\",\"sopLink\":\"Check to see if returns are flowing through returns-processor and saving to the returns-db. If not, create an urgent ticket to fix ASAP.\",\"to_cre\": \"Y\"},\"annotations\":{\"summary\":\"No DB Returns in an hour\",\"description\":\"Warning: no return has been written to the returns-db in the past hour.\"}}]"
+        }
       }
     }
   }
-}
