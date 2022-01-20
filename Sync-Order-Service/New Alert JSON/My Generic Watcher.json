@@ -33,7 +33,7 @@
                   {
                     "match_phrase": {
                       "cf_app_name": {
-                        "query": "$$$"
+                        "query": "-sync-order-service"
                       }
                     }
                   },

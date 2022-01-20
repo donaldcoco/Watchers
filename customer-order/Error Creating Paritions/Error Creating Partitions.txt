@@ -89,7 +89,7 @@
           "headers": {
             "Content-Type": "application/json"
           },
-          "body": "[{\"labels\":{\"alertname\":\"No DB Returns in and hour\",\"L2_Alerts\":\"Y\",\"org_name\":\"customer-order\",\"app_name\":\"returns-processor\", \"link_to_kibana\":\"https://kibana.creelastic.dcsg.com/goto/a8bf7d729195aaa4ebc782e94d5c33ee\",\"supportGroup\":\"Tech-CustomerOrders\",\"sopLink\":\"X-Matters customer-returns on call\",\"to_cre\": \"Y\"},\"annotations\":{\"summary\":\"Check to see if returns are flowing through returns-processor and saving to the returns-db. If not, create an urgent ticket to fix ASAP.\",\"description\":\"Warning: no return has been written to the returns-db in the past hour.\"}}]"
+          "body": "[{\"labels\":{\"alertname\":\"Error Creating Partitions\",\"L2_Alerts\":\"N\",\"org_name\":\"customer-order\",\"app_name\":\"{{ctx.cf_app_name}}\", \"link_to_kibana\":\"https://kibana.creelastic.dcsg.com/goto/f4931f624e2e3894b39f7cba03147d4c\",\"supportGroup\":\"Tech-CustomerOrders\",\"sopLink\":\"engineer on AO should review exception thrown in kibana logs to potentially fix for next month (runs on a cron schedule the first day of every month) and manually create partition for the failed month\",\"to_cre\": \"N\"},\"annotations\":{\"summary\":\"Error Creating Partitions\",\"description\":\"{{ctx.cf_app_name}} is having issues creating paritions please check the logs.\"}}]"
         }
       },
       "alert_manager_webhook_2": {
@@ -103,12 +103,10 @@
           "headers": {
             "Content-Type": "application/json"
           },
-          "body": "[{\"labels\":{\"alertname\":\"No DB Returns in and hour\",\"L2_Alerts\":\"Y\",\"org_name\":\"customer-order\",\"app_name\":\"returns-processor\", \"link_to_kibana\":\"https://kibana.creelastic.dcsg.com/goto/a8bf7d729195aaa4ebc782e94d5c33ee\",\"supportGroup\":\"Tech-CustomerOrders\",\"sopLink\":\"Check to see if returns are flowing through returns-processor and saving to the returns-db. If not, create an urgent ticket to fix ASAP.\",\"to_cre\": \"Y\"},\"annotations\":{\"summary\":\"No DB Returns in an hour\",\"description\":\"Warning: no return has been written to the returns-db in the past hour.\"}}]"
+          "body": "[{\"labels\":{\"alertname\":\"Error Creating Partitions\",\"L2_Alerts\":\"N\",\"org_name\":\"customer-order\",\"app_name\":\"{{ctx.cf_app_name}}\", \"link_to_kibana\":\"https://kibana.creelastic.dcsg.com/goto/f4931f624e2e3894b39f7cba03147d4c\",\"supportGroup\":\"Tech-CustomerOrders\",\"sopLink\":\"engineer on AO should review exception thrown in kibana logs to potentially fix for next month (runs on a cron schedule the first day of every month) and manually create partition for the failed month\",\"to_cre\": \"N\"},\"annotations\":{\"summary\":\"Error Creating Partitions\",\"description\":\"{{ctx.cf_app_name}} is having issues creating paritions please check the logs.\"}}]"
         }
       }
-    }
-  },
-   "metadata": {
+    }, "metadata": {
    "product_team": "CustomerOrders",
    "cre": "Don Coco",
    "ctdID": [
