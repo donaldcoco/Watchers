@@ -55,7 +55,7 @@
                   {
                     "range": {
                       "@timestamp": {
-                        "gte": "now-1h",
+                        "gte": "now-1m",
                         "lte": "now",
                         "format": "epoch_millis"
                       }
@@ -73,7 +73,7 @@
     "condition": {
       "compare": {
         "ctx.payload.hits.total": {
-          "lt": 1
+          "gte": 1
         }
       }
     },
@@ -89,7 +89,7 @@
           "headers": {
             "Content-Type": "application/json"
           },
-          "body": "[{\"labels\":{\"alertname\":\"Error Creating Partitions\",\"L2_Alerts\":\"N\",\"org_name\":\"customer-order\",\"app_name\":\"{{ctx.cf_app_name}}\", \"link_to_kibana\":\"https://kibana.creelastic.dcsg.com/goto/f4931f624e2e3894b39f7cba03147d4c\",\"supportGroup\":\"Tech-CustomerOrders\",\"sopLink\":\"engineer on AO should review exception thrown in kibana logs to potentially fix for next month (runs on a cron schedule the first day of every month) and manually create partition for the failed month\",\"to_cre\": \"N\"},\"annotations\":{\"summary\":\"Error Creating Partitions\",\"description\":\"{{ctx.cf_app_name}} is having issues creating paritions please check the logs.\"}}]"
+          "body": "[{\"labels\":{\"alertname\":\"Error Creating Partitions\",\"L2_Alerts\":\"N\",\"org_name\":\"customer-order\",\"app_name\":\"customer-order or co-auth0-sink\", \"link_to_kibana\":\"https://kibana.creelastic.dcsg.com/goto/f4931f624e2e3894b39f7cba03147d4c\",\"supportGroup\":\"Tech-CustomerOrders\",\"sopLink\":\"engineer on AO should review exception thrown in kibana logs to potentially fix for next month (runs on a cron schedule the first day of every month) and manually create partition for the failed month\",\"to_cre\": \"N\"},\"annotations\":{\"summary\":\"Error Creating Partitions\",\"description\":\"Either customer-order or co-auth0-sink is having issues creating paritions please check the logs.\"}}]"
         }
       },
       "alert_manager_webhook_2": {
@@ -103,7 +103,7 @@
           "headers": {
             "Content-Type": "application/json"
           },
-          "body": "[{\"labels\":{\"alertname\":\"Error Creating Partitions\",\"L2_Alerts\":\"N\",\"org_name\":\"customer-order\",\"app_name\":\"{{ctx.cf_app_name}}\", \"link_to_kibana\":\"https://kibana.creelastic.dcsg.com/goto/f4931f624e2e3894b39f7cba03147d4c\",\"supportGroup\":\"Tech-CustomerOrders\",\"sopLink\":\"engineer on AO should review exception thrown in kibana logs to potentially fix for next month (runs on a cron schedule the first day of every month) and manually create partition for the failed month\",\"to_cre\": \"N\"},\"annotations\":{\"summary\":\"Error Creating Partitions\",\"description\":\"{{ctx.cf_app_name}} is having issues creating paritions please check the logs.\"}}]"
+          "body": "[{\"labels\":{\"alertname\":\"Error Creating Partitions\",\"L2_Alerts\":\"N\",\"org_name\":\"customer-order\",\"app_name\":\"customer-order or co-auth0-sink\", \"link_to_kibana\":\"https://kibana.creelastic.dcsg.com/goto/f4931f624e2e3894b39f7cba03147d4c\",\"supportGroup\":\"Tech-CustomerOrders\",\"sopLink\":\"engineer on AO should review exception thrown in kibana logs to potentially fix for next month (runs on a cron schedule the first day of every month) and manually create partition for the failed month\",\"to_cre\": \"N\"},\"annotations\":{\"summary\":\"Error Creating Partitions\",\"description\":\"Either customer-order or co-auth0-sink is having issues creating paritions please check the logs.\"}}]"
         }
       }
     }, "metadata": {
