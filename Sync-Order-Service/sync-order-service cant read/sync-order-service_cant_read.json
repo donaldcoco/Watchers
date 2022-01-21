@@ -90,7 +90,7 @@
           "headers": {
             "Content-Type": "application/json"
           },
-          "body": "[{\"labels\":{\"alertname\":\"sync-order-service cant read\",\"L2_Alerts\":\"Y\",\"org_name\":\"Customer Order\",\"app_name\":\"sync-order-service\", \"link_to_kibana\":\"https://kibana.creelastic.dcsg.com/goto/5849595838bd8514aaac327bc92bf72c\",\"supportGroup\":\"Tech-CustomerOrder\",\"SOP\":\"X-Matters Customer Order team member to investigate further\"},\"annotations\":{\"summary\":\"sync-order-service is having trouble reading\",\"description\":\"sync-order-service has had 5 JsonProcessingExceptions in the last 15 minutes while reading messages from the co-verified-returns topic which should be investigated\"}}]"
+          "body": "[{\"labels\":{\"alertname\":\"sync-order-service cant read\",\"L2_Alerts\":\"Y\",\"org_name\":\"customer-order\",\"app_name\":\"sync-order-service\", \"link_to_kibana\":\"https://kibana.creelastic.dcsg.com/goto/5849595838bd8514aaac327bc92bf72c\",\"supportGroup\":\"Tech-CustomerOrder\",\"SOP\":\"X-Matters Customer Order team member to investigate further\"},\"annotations\":{\"summary\":\"sync-order-service is having trouble reading\",\"description\":\"sync-order-service has had 5 JsonProcessingExceptions in the last 15 minutes while reading messages from the co-verified-returns topic which should be investigated\"}}]"
         }
       }
     },
