@@ -25,23 +25,14 @@
                           "match_phrase": {
                             "message.text": "$$$"
                           }
+                        },
+                        {
+                          "match_phrase": {
+                            "message.text": "$$$"
+                          }
                         }
                       ],
                       "minimum_should_match": 1
-                    }
-                  },
-                  {
-                    "match_phrase": {
-                      "cf_app_name": {
-                        "query": "$$$"
-                      }
-                    }
-                  },
-                  {
-                    "match_phrase": {
-                      "level.keyword": {
-                        "query": "$$$"
-                      }
                     }
                   },
                   {
