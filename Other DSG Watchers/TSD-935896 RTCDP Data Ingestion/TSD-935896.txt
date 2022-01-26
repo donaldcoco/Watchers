@@ -1,0 +1,6 @@
+https://jira.dcsg.com/browse/TSD-935896
+
+query url: https://crekibananp.dcsg.com/goto/41aeea90-7edc-11ec-8b20-772b9faacb59
+
+send email if there is even one event
+check every 10 minutes 

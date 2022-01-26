@@ -1,0 +1,82 @@
+{
+    "trigger": {
+        "schedule": {
+          "interval": "10m"
+        }
+    },
+    "input": {
+      "search": {
+        "request": {
+          "search_type": "query_then_fetch",
+          "indices": [   
+            "pcf_app_marketing-tools"                                   
+          ],
+          "rest_total_hits_as_int": true,
+          "body": {
+            "size": 0,
+            "query": {
+              "bool": {                                                  
+                "must": [],
+                "filter": [                           
+                  {
+                    "bool": {
+                      "should": [
+                        {
+                          "match_phrase": {
+                            "cf_app_name": "rtcdp-webhook"
+                          }
+                        },
+                        {
+                          "match_phrase": {
+                            "xdmEventCode": "ps_load_failure"
+                          }
+                        },
+                        {
+                            "match_phrase": {
+                              "xdmEventCode": "ing_load_failure"
+                            }
+                        },
+                        {
+                            "match_phrase": {
+                              "xdmEventCode": "ig_load_failure"
+                            }
+                        }
+                      ],
+                      "minimum_should_match": 2
+                    }
+                  },
+                  {
+                    "range": {                                            
+                      "@timestamp": {
+                        "gte": "now-10m",
+                        "format": "epoch_millis"
+                      }
+                    }
+                  }
+                ],
+                "should": [],
+                "must_not": []
+              }
+            }
+          }
+        }
+      }
+    },
+    "condition": {
+      "compare": {
+        "ctx.payload.hits.total": {
+          "gt": 0
+        }
+      }
+    },
+    "actions": {
+        "email_admin" : {
+          "email": {
+            "to": ["'<james.ho@dcsg.com>','<VijayKumar.Sharma@dcsg.com>','<Bryan.Rekrut@dcsg.com>'"],
+            "subject": "{{ctx.payload.hits.total}} Errors in Adobe RTCDP",
+            "body": "{{ctx.payload.hits.total}} Errors in Adobe RTCDP"
+          }
+        }
+    }
+    
+}
