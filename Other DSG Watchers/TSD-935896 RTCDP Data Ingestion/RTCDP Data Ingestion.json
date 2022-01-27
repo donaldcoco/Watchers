@@ -74,7 +74,7 @@
           "email": {
             "to": ["'<james.ho@dcsg.com>','<VijayKumar.Sharma@dcsg.com>','<Bryan.Rekrut@dcsg.com>'"],
             "subject": "{{ctx.payload.hits.total}} Errors in Adobe RTCDP",
-            "body": "{{ctx.payload.hits.total}} Errors in Adobe RTCDP"
+            "body": "{{ctx.payload.hits.total}} Errors in Adobe RTCDP https://crekibananp.dcsg.com/goto/8f072330-7edb-11ec-8b20-772b9faacb59"
           }
         }
     }
