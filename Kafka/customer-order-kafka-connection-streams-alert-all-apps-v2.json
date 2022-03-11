@@ -1,0 +1,116 @@
+{
+    "trigger": {
+      "schedule": {
+        "cron": "0 * * ? * *"  
+      }
+    },
+    "input": {
+      "search": {
+        "request": {
+          "search_type": "query_then_fetch",
+          "indices": [   
+            "pcf_app_customer-order"                                   
+          ],
+          "rest_total_hits_as_int": true,
+          "body": {
+            "size": 0,
+            "query": {
+              "bool": {                                                  
+                "must": [],
+                "filter": [                           
+                  {
+                    "bool": {
+                      "should": [
+                        {
+                          "match_phrase": {
+                            "message.text": "All stream threads have died"
+                          }
+                        },
+                        {
+                          "match_phrase": {
+                            "message": "All stream threads have died"
+                          }
+                        },
+                        {
+                            "match_phrase": {
+                              "cf_app_name": ""
+                            }
+                        }
+                      ],
+                      "minimum_should_match": 2
+                    }
+                  },
+                  {
+                    "range": {                                            
+                      "@timestamp": {
+                        "gte": "now-5m",
+                        "format": "epoch_millis"
+                      }
+                    }
+                  }
+                ],
+                "should": [],
+                "must_not": []
+              }
+            },
+            "_source":[
+                "message.text",
+                "cf_app_name"
+            ],
+            "sort": [
+              {
+                "@timestamp": {
+                  "order": "desc"
+                }
+              }
+            ]            
+          }
+        }
+      }
+    },
+    "condition": {
+      "compare": {
+        "ctx.payload.hits.total": {                                          
+          "gt": 0
+        }
+      }
+    },
+    "actions": {
+      "alert_manager_webhook_1": {
+        "webhook": {
+          "scheme": "http",
+          "host": "am-01.prod.alertmanager.dcsg.com",
+          "port": 9093,
+          "method": "post",
+          "path": "/api/v2/alerts",
+          "params": {},
+          "headers": {
+            "Content-Type": "application/json"
+          },
+          "body": "[{\"labels\":{\"alertname\":\"TESTING NEW ALERT\",\"org_name\":\"customer-order\",\"app_name\":\"{{#ctx.payload.hits.hits}}{{_source.cf_app_name}}{{/ctx.payload.hits.hits}}\",\"supportGroup\":\"Tech-CustomerOrders\",\"cre_support_group\":\"Tech-CRE-Athlete\",\"L2_Alerts\":\"N\",\"to_cre\":\"Y\",\"log_message\":\"{{#ctx.payload.hits.hits}}{{_source.message.text}}:{{/ctx.payload.hits.hits}}\",\"dashboard_link\":\"https://grafana.dcsg.com/goto/e7t1wyL7z?orgId=1\",\"kibana_link\":\"https://kibana.creelastic.dcsg.com/goto/2651bfbe80134b98db5b3c8ed70b7b50\",\"sopLink\":\"https://confluence.dcsg.com/display/AO/Order+Flow+Impacting+Alert+SOP\"},\"annotations\":{\"summary\":\"Customer Order - Kafka streams have died - Please Restart the impacted containers NOT APPLICATION EVEN IF THE ALERT CLEARS!!!\",\"description\":\"WARNING: THIS ALERT WILL CLEAR AS RESOLVED EVEN THOUGH IT IS NOT.  Something caused the Kafka connection to fail on the application listed.  Please restart the containers referenced in the alert.  Reference the dashboard link, view the platform and app name.  Navigate to that applications details in PCF.  Note the table of running containers.  Click the three dot button, select Terminate Instance this will stop and start the container.  If all containers are un-healthy please restart the entire application.\"}}]"
+        }
+      },
+      "alert_manager_webhook_2": {
+        "webhook": {
+          "scheme": "http",
+          "host": "am-02.prod.alertmanager.dcsg.com",
+          "port": 9093,
+          "method": "post",
+          "path": "/api/v2/alerts",
+          "params": {},
+          "headers": {
+            "Content-Type": "application/json"
+          },
+          "body": "[{\"labels\":{\"alertname\":\"TESTING NEW ALERT\",\"org_name\":\"customer-order\",\"app_name\":\"{{#ctx.payload.hits.hits}}{{_source.cf_app_name}}{{/ctx.payload.hits.hits}}\",\"supportGroup\":\"Tech-CustomerOrders\",\"cre_support_group\":\"Tech-CRE-Athlete\",\"L2_Alerts\":\"N\",\"to_cre\":\"Y\",\"log_message\":\"{{#ctx.payload.hits.hits}}{{_source.message.text}}:{{/ctx.payload.hits.hits}}\",\"dashboard_link\":\"https://grafana.dcsg.com/goto/e7t1wyL7z?orgId=1\",\"kibana_link\":\"https://kibana.creelastic.dcsg.com/goto/2651bfbe80134b98db5b3c8ed70b7b50\",\"sopLink\":\"https://confluence.dcsg.com/display/AO/Order+Flow+Impacting+Alert+SOP\"},\"annotations\":{\"summary\":\"Customer Order - Kafka streams have died - Please Restart the impacted containers NOT APPLICATION EVEN IF THE ALERT CLEARS!!!\",\"description\":\"WARNING: THIS ALERT WILL CLEAR AS RESOLVED EVEN THOUGH IT IS NOT.  Something caused the Kafka connection to fail on the application listed.  Please restart the containers referenced in the alert.  Reference the dashboard link, view the platform and app name.  Navigate to that applications details in PCF.  Note the table of running containers.  Click the three dot button, select Terminate Instance this will stop and start the container.  If all containers are un-healthy please restart the entire application.\"}}]"
+        }
+      }
+    },
+    "metadata": {
+        "product_team": "CustomerOrders",
+        "cre": "Don Coco",
+        "ctdID": [
+           46
+         ]
+       }
+    
+}
