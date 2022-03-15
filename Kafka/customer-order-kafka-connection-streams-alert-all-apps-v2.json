@@ -30,14 +30,9 @@
                           "match_phrase": {
                             "message": "All stream threads have died"
                           }
-                        },
-                        {
-                            "match_phrase": {
-                              "cf_app_name": ""
-                            }
                         }
                       ],
-                      "minimum_should_match": 2
+                      "minimum_should_match": 1
                     }
                   },
                   {
@@ -52,18 +47,7 @@
                 "should": [],
                 "must_not": []
               }
-            },
-            "_source":[
-                "message.text",
-                "cf_app_name"
-            ],
-            "sort": [
-              {
-                "@timestamp": {
-                  "order": "desc"
-                }
-              }
-            ]            
+            }           
           }
         }
       }
@@ -87,7 +71,7 @@
           "headers": {
             "Content-Type": "application/json"
           },
-          "body": "[{\"labels\":{\"alertname\":\"TESTING NEW ALERT\",\"org_name\":\"customer-order\",\"app_name\":\"{{#ctx.payload.hits.hits}}{{_source.cf_app_name}}{{/ctx.payload.hits.hits}}\",\"supportGroup\":\"Tech-CustomerOrders\",\"cre_support_group\":\"Tech-CRE-Athlete\",\"L2_Alerts\":\"N\",\"to_cre\":\"Y\",\"log_message\":\"{{#ctx.payload.hits.hits}}{{_source.message.text}}:{{/ctx.payload.hits.hits}}\",\"dashboard_link\":\"https://grafana.dcsg.com/goto/e7t1wyL7z?orgId=1\",\"kibana_link\":\"https://kibana.creelastic.dcsg.com/goto/2651bfbe80134b98db5b3c8ed70b7b50\",\"sopLink\":\"https://confluence.dcsg.com/display/AO/Order+Flow+Impacting+Alert+SOP\"},\"annotations\":{\"summary\":\"Customer Order - Kafka streams have died - Please Restart the impacted containers NOT APPLICATION EVEN IF THE ALERT CLEARS!!!\",\"description\":\"WARNING: THIS ALERT WILL CLEAR AS RESOLVED EVEN THOUGH IT IS NOT.  Something caused the Kafka connection to fail on the application listed.  Please restart the containers referenced in the alert.  Reference the dashboard link, view the platform and app name.  Navigate to that applications details in PCF.  Note the table of running containers.  Click the three dot button, select Terminate Instance this will stop and start the container.  If all containers are un-healthy please restart the entire application.\"}}]"
+          "body": "[{\"labels\":{\"alertname\":\"TESTING NEW ALERT\",\"org_name\":\"{{ctx.payload.hits.hits.0._source.cf_org_name}}\",\"app_name\":\"{{#ctx.payload.hits.hits._source.cf_app_name}}\",\"supportGroup\":\"Tech-CustomerOrders\",\"cre_support_group\":\"Tech-CRE-Athlete\",\"L2_Alerts\":\"N\",\"to_cre\":\"Y\",\"log_message\":\"{{#ctx.payload.hits.hits}}{{_source.message}}:{{/ctx.payload.hits.hits}}\",\"dashboard_link\":\"https://grafana.dcsg.com/goto/e7t1wyL7z?orgId=1\",\"kibana_link\":\"https://kibana.creelastic.dcsg.com/goto/2651bfbe80134b98db5b3c8ed70b7b50\",\"sopLink\":\"https://confluence.dcsg.com/display/AO/Order+Flow+Impacting+Alert+SOP\"},\"annotations\":{\"summary\":\"Customer Order - Kafka streams have died - Please Restart the impacted containers NOT APPLICATION EVEN IF THE ALERT CLEARS!!!\",\"description\":\"WARNING: THIS ALERT WILL CLEAR AS RESOLVED EVEN THOUGH IT IS NOT.  Something caused the Kafka connection to fail on the application listed.  Please restart the containers referenced in the alert.  Reference the dashboard link, view the platform and app name.  Navigate to that applications details in PCF.  Note the table of running containers.  Click the three dot button, select Terminate Instance this will stop and start the container.  If all containers are un-healthy please restart the entire application.\"}}]"
         }
       },
       "alert_manager_webhook_2": {
@@ -101,7 +85,7 @@
           "headers": {
             "Content-Type": "application/json"
           },
-          "body": "[{\"labels\":{\"alertname\":\"TESTING NEW ALERT\",\"org_name\":\"customer-order\",\"app_name\":\"{{#ctx.payload.hits.hits}}{{_source.cf_app_name}}{{/ctx.payload.hits.hits}}\",\"supportGroup\":\"Tech-CustomerOrders\",\"cre_support_group\":\"Tech-CRE-Athlete\",\"L2_Alerts\":\"N\",\"to_cre\":\"Y\",\"log_message\":\"{{#ctx.payload.hits.hits}}{{_source.message.text}}:{{/ctx.payload.hits.hits}}\",\"dashboard_link\":\"https://grafana.dcsg.com/goto/e7t1wyL7z?orgId=1\",\"kibana_link\":\"https://kibana.creelastic.dcsg.com/goto/2651bfbe80134b98db5b3c8ed70b7b50\",\"sopLink\":\"https://confluence.dcsg.com/display/AO/Order+Flow+Impacting+Alert+SOP\"},\"annotations\":{\"summary\":\"Customer Order - Kafka streams have died - Please Restart the impacted containers NOT APPLICATION EVEN IF THE ALERT CLEARS!!!\",\"description\":\"WARNING: THIS ALERT WILL CLEAR AS RESOLVED EVEN THOUGH IT IS NOT.  Something caused the Kafka connection to fail on the application listed.  Please restart the containers referenced in the alert.  Reference the dashboard link, view the platform and app name.  Navigate to that applications details in PCF.  Note the table of running containers.  Click the three dot button, select Terminate Instance this will stop and start the container.  If all containers are un-healthy please restart the entire application.\"}}]"
+          "body": "[{\"labels\":{\"alertname\":\"TESTING NEW ALERT\",\"org_name\":\"{{ctx.payload.hits.hits.0._source.cf_org_name}}\",\"app_name\":\"{{#ctx.payload.hits.hits._source.cf_app_name}}\",\"supportGroup\":\"Tech-CustomerOrders\",\"cre_support_group\":\"Tech-CRE-Athlete\",\"L2_Alerts\":\"N\",\"to_cre\":\"Y\",\"log_message\":\"{{#ctx.payload.hits.hits}}{{_source.message}}:{{/ctx.payload.hits.hits}}\",\"dashboard_link\":\"https://grafana.dcsg.com/goto/e7t1wyL7z?orgId=1\",\"kibana_link\":\"https://kibana.creelastic.dcsg.com/goto/2651bfbe80134b98db5b3c8ed70b7b50\",\"sopLink\":\"https://confluence.dcsg.com/display/AO/Order+Flow+Impacting+Alert+SOP\"},\"annotations\":{\"summary\":\"Customer Order - Kafka streams have died - Please Restart the impacted containers NOT APPLICATION EVEN IF THE ALERT CLEARS!!!\",\"description\":\"WARNING: THIS ALERT WILL CLEAR AS RESOLVED EVEN THOUGH IT IS NOT.  Something caused the Kafka connection to fail on the application listed.  Please restart the containers referenced in the alert.  Reference the dashboard link, view the platform and app name.  Navigate to that applications details in PCF.  Note the table of running containers.  Click the three dot button, select Terminate Instance this will stop and start the container.  If all containers are un-healthy please restart the entire application.\"}}]"
         }
       }
     },
