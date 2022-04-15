@@ -55,7 +55,7 @@
 	"condition": {
 		"compare": {
 			"ctx.payload.hits.total": {
-				"gt": 50
+				"gt": 100
 			}
 		}
 	},
