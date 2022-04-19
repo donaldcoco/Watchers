@@ -1,7 +1,7 @@
 {
     "trigger": {
       "schedule": {
-        "cron": "0 * * ? * *"  
+        "cron": "0 8 * ? * *"  
       }
     },
     "input": {
@@ -38,7 +38,7 @@
                   {
                     "range": {                                            
                       "@timestamp": {
-                        "gte": "now-5m",
+                        "gte": "now-24h",
                         "format": "epoch_millis"
                       }
                     }
@@ -93,8 +93,7 @@
         "product_team": "CustomerOrders",
         "cre": "Don Coco",
         "ctdID": [
-           100,
-           100
+           0
          ]
        }
     
