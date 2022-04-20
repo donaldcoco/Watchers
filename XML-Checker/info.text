@@ -1,0 +1,15 @@
+Wondering if you could help us to create a new alert for co-xml-checker. I couldn’t find a previous email I had sent you with the template for alerts, so if I leave anything out below just let me know what else you need:
+
+We want to alert anytime an “xml missing” log happens in co-xml-checker in prod and non-prod (we might turn off the non-prod one if it’s too noisy). In the alert can you include this kibana link which includes the “xml missing” log, but also the more specific ones to see which individual ids are missing: https://kibananp.dcsg.com/goto/0e8ecf80-b736-11ec-91c5-afe8ab3aca7d
+
+(for some reason whenever I send kibana links it defaults to “pcf_app_customer-returns” on the top left, so you’ll need to switch it to pcf_app_customer-order in the dropdown)
+
+L2 – no
+Title – co-xml-checker - Missing AO or WCS xmls found in the past 24 hours
+Description – AO engineers need to look at logs (kibana link) to see which ids have missing AO or WCS xmls and determine root cause and open ticket to fix.
+
+
+
+
+
+Other info..... I may need to build in a way to time this out.
