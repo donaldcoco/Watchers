@@ -1,7 +1,7 @@
 {
   "trigger": {
     "schedule": {
-      "cron": "0 8 * ? * *"
+      "cron": "0 * 10 ? * *"
     }
   },
   "input": {
@@ -28,9 +28,15 @@
                       },
                       {
                         "match_phrase": {
-                          "message.text": "xml-missing"
+                          "message.text": "missing AO xml"
+                        }
+                      },
+                      {
+                        "match_phrase": {
+                          "message.text": "missing WCS xml"
                         }
                       }
+
                     ],
                     "minimum_should_match": 2
                   }
@@ -38,7 +44,7 @@
                 {
                   "range": {
                     "@timestamp": {
-                      "gte": "now-24h",
+                      "gte": "now-2h",
                       "format": "epoch_millis"
                     }
                   }
@@ -71,7 +77,7 @@
         "headers": {
           "Content-Type": "application/json"
         },
-        "body": """[{"labels":{"alertname":"XML Missing","L2_Alerts":"N","org_name":"customer-order","app_name":"co-xml-checker", "link_to_kibana":"https://kibana.creelastic.dcsg.com/goto/790b8710-bf45-11ec-9abf-9f90f7d76260","supportGroup":"Tech-CustomerOrders","SOP":"AO engineers need to look at logs to see which ids have missing AO or WCS xmls and determine root cause and open ticket to fix.","to_cre": "Y"},"annotations":{"summary":"Missing AO or WCS xmls found in the past 24 hours","description":"co-xml-checker has found a message in the logs stating there was xml missing"}}]"""
+        "body": """[{"labels":{"alertname":"XML Missing","L2_Alerts":"N","org_name":"customer-order","app_name":"co-xml-checker", "link_to_kibana":"https://kibana.creelastic.dcsg.com/goto/45ee7e40-c1b2-11ec-af4c-fb97bdb84c54","supportGroup":"Tech-CustomerOrders","SOP":"AO engineers need to look at logs to see which ids have missing AO or WCS xmls and determine root cause and open ticket to fix.","to_cre": "Y"},"annotations":{"summary":"Missing AO or WCS xmls found in the past 24 hours","description":"co-xml-checker has found a message in the logs stating there was xml missing"}}]"""
       }
     },
     "alert_manager_webhook_2": {
@@ -85,7 +91,7 @@
         "headers": {
           "Content-Type": "application/json"
         },
-        "body": """[{"labels":{"alertname":"XML Missing","L2_Alerts":"N","org_name":"customer-order","app_name":"co-xml-checker", "link_to_kibana":"https://kibana.creelastic.dcsg.com/goto/790b8710-bf45-11ec-9abf-9f90f7d76260","supportGroup":"Tech-CustomerOrders","SOP":"AO engineers need to look at logs to see which ids have missing AO or WCS xmls and determine root cause and open ticket to fix.","to_cre": "Y"},"annotations":{"summary":"Missing AO or WCS xmls found in the past 24 hours","description":"co-xml-checker has found a message in the logs stating there was xml missing"}}]"""
+        "body": """[{"labels":{"alertname":"XML Missing","L2_Alerts":"N","org_name":"customer-order","app_name":"co-xml-checker", "link_to_kibana":"https://kibana.creelastic.dcsg.com/goto/45ee7e40-c1b2-11ec-af4c-fb97bdb84c54","supportGroup":"Tech-CustomerOrders","SOP":"AO engineers need to look at logs to see which ids have missing AO or WCS xmls and determine root cause and open ticket to fix.","to_cre": "Y"},"annotations":{"summary":"Missing AO or WCS xmls found in the past 24 hours","description":"co-xml-checker has found a message in the logs stating there was xml missing"}}]"""
       }
     }
   },
