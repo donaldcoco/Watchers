@@ -1,0 +1,100 @@
+{
+    "trigger": {
+      "schedule": {
+        "cron": "0 * * ? * *"  
+      }
+    },
+    "input": {
+      "search": {
+        "request": {
+          "search_type": "query_then_fetch",
+          "indices": [   
+            "pcf_app_customer-order"                                   
+          ],
+          "rest_total_hits_as_int": true,
+          "body": {
+            "size": 0,
+            "query": {
+              "bool": {                                                  
+                "must": [],
+                "filter": [                           
+                  {
+                    "bool": {
+                      "should": [
+                        {
+                          "match_phrase": {
+                            "cf_app_name": "co-sync-order-processor"
+                          }
+                        },
+                        {
+                          "match_phrase": {
+                            "msg": "org.springframework.web.client.HttpClientErrorException$BadRequest"
+                          }
+                        }
+                      ],
+                      "minimum_should_match": 2
+                    }
+                  },
+                  {
+                    "range": {                                            
+                      "@timestamp": {
+                        "gte": "now-15m",
+                        "format": "epoch_millis"
+                      }
+                    }
+                  }
+                ],
+                "should": [],
+                "must_not": []
+              }
+            }
+          }
+        }
+      }
+    },
+    "condition": {
+      "compare": {
+        "ctx.payload.hits.total": {                                          
+          "gte": 10
+        }
+      }
+    },
+    "actions": {
+      "alert_manager_webhook_1": {
+        "webhook": {
+          "scheme": "http",
+          "host": "am-01.prod.alertmanager.dcsg.com",
+          "port": 9093,
+          "method": "post",
+          "path": "/api/v2/alerts",
+          "params": {},
+          "headers": {
+            "Content-Type": "application/json"
+          },
+          "body": "[{\"labels\":{\"alertname\":\"Error Calling MDM\",\"L2_Alerts\":\"Y\",\"org_name\":\"customer-order\",\"app_name\":\"co-sync-order-processor\", \"link_to_kibana\":\"https://kibana.creelastic.dcsg.com/goto/75a160f0-c70f-11ec-af4c-fb97bdb84c54\",\"supportGroup\":\"Tech-CustomerOrder\",\"SOP\":\"X-Matters someone from Tech-CustomerOrder to check on this error\",\"to_cre\": \"Y\"},\"annotations\":{\"summary\":\"Error Calling MDM\",\"description\":\"Error Calling MDM to get the Store Details for Status Events , Shipments will fail to make it to Customer. Someone on Tech-CustomerOrder needs to be XMattered to investigate the reason.\"}}]"
+        }
+      },
+      "alert_manager_webhook_2": {
+        "webhook": {
+          "scheme": "http",
+          "host": "am-02.prod.alertmanager.dcsg.com",
+          "port": 9093,
+          "method": "post",
+          "path": "/api/v2/alerts",
+          "params": {},
+          "headers": {
+            "Content-Type": "application/json"
+          },
+          "body": "[{\"labels\":{\"alertname\":\"Error Calling MDM\",\"L2_Alerts\":\"Y\",\"org_name\":\"customer-order\",\"app_name\":\"co-sync-order-processor\", \"link_to_kibana\":\"https://kibana.creelastic.dcsg.com/goto/75a160f0-c70f-11ec-af4c-fb97bdb84c54\",\"supportGroup\":\"Tech-CustomerOrder\",\"SOP\":\"X-Matters someone from Tech-CustomerOrder to check on this error\",\"to_cre\": \"Y\"},\"annotations\":{\"summary\":\"Error Calling MDM\",\"description\":\"Error Calling MDM to get the Store Details for Status Events , Shipments will fail to make it to Customer. Someone on Tech-CustomerOrder needs to be XMattered to investigate the reason.\"}}]"
+        }
+      }
+    },
+    "metadata": {
+        "product_team": "CustomerOrders",
+        "cre": "Don Coco",
+        "ctdID": [
+           27
+         ]
+       }
+    
+}
