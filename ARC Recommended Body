@@ -1,0 +1,25 @@
+[{
+    "labels": {
+        "alert_source": "kibana_alert",
+        "alertname":"$$$$$$$",
+        "group_name":"null",
+        "supportGroup":"Tech-$$$$$$$$",
+        "cre_support_group":"$$$$$$$$",
+        "use_arc":"Y"
+    },
+    "annotations": {
+        "summary":"$$$$$$$$",
+        "description":"$$$$$$$$$",
+        "arc_action":"teams",
+        "destinations":"$$$$$$$$",
+        "sopLink": "$$$$$$",
+        "dashboardLink": "$$$$$$$$",
+        "priority": "low",
+        "awx_job_name":"$$$$$",
+        "awx_env":"<required environment variables>",
+        "arc_event_only":"Y"
+    }
+}]
+
+
+//retrived from https://confluence.dcsg.com/display/CRE/Kibana+Native+ARC+Alert

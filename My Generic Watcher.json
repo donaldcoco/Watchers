@@ -71,7 +71,30 @@
           "headers": {
             "Content-Type": "application/json"
           },
-          "body": "[{\"labels\":{\"alertname\":\"$$$$$\",\"L2_Alerts\":\"Y\",\"org_name\":\"$$$$$\",\"app_name\":\"$$$$$\", \"link_to_kibana\":\"$$$$$\",\"supportGroup\":\"$$$$$\",\"SOP\":\"$$$$$\",\"to_cre\": \"Y\"},\"annotations\":{\"summary\":\"$$$$$\",\"description\":\"$$$$$\"}}]"
+          "body": """[{
+            "labels":{
+              "alertname":"xxxx",
+              "alert_source":"kibana_alert",
+              "supportGroup":"Tech-xxxx",
+              "cre_support_group":"Tech-RExxxx",
+              "severity":"xxxx", 
+              "use_arc":"xxxx"
+            },
+            "annotations":{
+              "summary":"xxx",
+              "dashboard_link":"xxxx",
+              "sopLink":"xxxx",
+              "destinations":"xxxx",
+              "description": "xxxx",
+              "ctdIDs":"xxxx",
+              "arc_action":"xxxx",
+              "jira_impact":"xxxx",
+              "jira_urgency":"xxxx",
+              "arc_event_only":"xxxx",
+              "awx_env":"xxxx",
+              "awx_job_name":"xxxx"
+            }
+          }]"""
         }
       },
       "alert_manager_webhook_2": {
@@ -85,13 +108,36 @@
           "headers": {
             "Content-Type": "application/json"
           },
-          "body": "[{\"labels\":{\"alertname\":\"$$$$$\",\"L2_Alerts\":\"Y\",\"org_name\":\"$$$$$\",\"app_name\":\"$$$$$\", \"link_to_kibana\":\"$$$$$\",\"supportGroup\":\"$$$$$\",\"SOP\":\"$$$$$\",\"to_cre\": \"Y\"},\"annotations\":{\"summary\":\"$$$$$\",\"description\":\"$$$$$\"}}]"
+          "body": """[{
+            "labels":{
+              "alertname":"xxxx",
+              "alert_source":"kibana_alert",
+              "supportGroup":"Tech-xxxx",
+              "cre_support_group":"Tech-RExxxx",
+              "severity":"xxxx", 
+              "use_arc":"xxxx"
+            },
+            "annotations":{
+              "summary":"xxx",
+              "dashboard_link":"xxxx",
+              "sopLink":"xxxx",
+              "destinations":"xxxx",
+              "description": "xxxx",
+              "ctdIDs":"xxxx",
+              "arc_action":"xxxx",
+              "jira_impact":"xxxx",
+              "jira_urgency":"xxxx",
+              "arc_event_only":"xxxx",
+              "awx_env":"xxxx",
+              "awx_job_name":"xxxx"
+            }
+          }]"""
         }
       }
     },
     "metadata": {
-        "product_team": "CustomerOrders",
-        "cre": "Don Coco",
+        "product_team": "$$$$$$$",
+        "cre": "$$$$$",
         "ctdID": [
            100,
            100

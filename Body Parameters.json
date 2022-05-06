@@ -1,0 +1,29 @@
+[{
+    "labels": {
+        "alert_source": "AlertManager Required",
+        "alertname":"AlertManager Required",
+        "group_name":"null",
+        "supportGroup":"ARC Required",
+        "cre_support_group":"ARC Required",
+        "use_arc":"ARC Required",
+        "org_name":"optional",
+        "severity":"ARC Required",
+        "L2_Alerts":"Depricated don't use",
+        "jira":"Depricated don't use"
+    },
+    "annotations": {
+        "summary":"AlertManager Required",
+        "description":"AlertManager Required",
+        "arc_action":"ARC Required",
+        "destinations":"ARC Required",
+        "sopLink": "AlertManager Recommended",
+        "dashboardLink": "AlertManager Recommended",
+        "kibanaLink":"optional",
+        "awx_job_name":"AWX Required",
+        "awx_env":"AWX Required",
+        "arc_event_only":"ARC Optional",
+        "ctdIDs":"AlerManager Recommended",
+        "jira_impact":"ARC Recommended",
+        "jira_urgency":"ARC Recommended"
+    }
+}]

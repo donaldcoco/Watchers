@@ -1,0 +1,27 @@
+[{
+    "labels":{
+	    "alertname":"xxxx",
+        "alert_source":"kibana_alert",
+        "supportGroup":"Tech-xxxx",
+        "cre_support_group":"Tech-RExxxx",
+        "severity":"xxxx", 
+        "use_arc":"xxxx"
+    },
+    "annotations":{
+        "summary":"xxx",
+        "dashboard_link":"xxxx",
+        "sopLink":"xxxx",
+        "destinations":"xxxx",
+        "description": "xxxx",
+        "ctdIDs":"xxxx",
+        "arc_action":"xxxx",
+        "jira_impact":"xxxx",
+        "jira_urgency":"xxxx",
+        "arc_event_only":"xxxx",
+        "awx_env":"xxxx",
+        "awx_job_name":"xxxx"
+    }
+}]
+
+
+//retrived from https://github.com/dsg-tech/re-documentation/blob/development/docs/Elastic%20Stack%20(RE)/Kibana/watchers.md
