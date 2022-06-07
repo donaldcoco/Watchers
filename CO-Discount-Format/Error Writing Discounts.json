@@ -1,0 +1,133 @@
+{
+    "trigger": {
+      "schedule": {
+        "cron": "0 * * ? * *"  
+      }
+    },
+    "input": {
+      "search": {
+        "request": {
+          "search_type": "query_then_fetch",
+          "indices": [   
+            "pcf_app_customer-order"                                   
+          ],
+          "rest_total_hits_as_int": true,
+          "body": {
+            "size": 0,
+            "query": {
+              "bool": {                                                  
+                "must": [],
+                "filter": [                           
+                  {
+                    "bool": {
+                      "should": [
+                        {
+                          "match_phrase": {
+                            "message.text": "Error writing discounts to co-discounts topic"
+                          }
+                        }
+                      ],
+                      "minimum_should_match": 1
+                    }
+                  },
+                  {
+                    "range": {                                            
+                      "@timestamp": {
+                        "gte": "now-5m",
+                        "format": "epoch_millis"
+                      }
+                    }
+                  }
+                ],
+                "should": [],
+                "must_not": []
+              }
+            }
+          }
+        }
+      }
+    },
+    "condition": {
+      "compare": {
+        "ctx.payload.hits.total": {                                          
+          "gte": 1
+        }
+      }
+    },
+    "actions": {
+      "alert_manager_webhook_1": {
+        "webhook": {
+          "scheme": "http",
+          "host": "am-01.prod.alertmanager.dcsg.com",
+          "port": 9093,
+          "method": "post",
+          "path": "/api/v2/alerts",
+          "params": {},
+          "headers": {
+            "Content-Type": "application/json"
+          },
+          "body": """[{
+            "labels":{
+              "alertname":"Error Writing Discounts",
+              "alert_source":"kibana_alert",
+              "supportGroup":"Tech-CustomerOrders",
+              "cre_support_group":"Tech-RE-Athlete",
+              "severity":"Low", 
+              "use_arc":"Y"
+            },
+            "annotations":{
+              "summary":"There was an Error writing to co-discounts",
+              "dashboard_link":"https://kibana.creelastic.dcsg.com/goto/0fc66340-e698-11ec-9abf-9f90f7d76260",
+              "sopLink":"TBD",
+              "destinations":"Tech-CustomerOrders-Low",
+              "description": "There was an occurance of the message Error writing discounts to co-discounts topic and it needs to be checked out",
+              "ctdIDs":"28",
+              "arc_action":"teams",
+              "arc_event_only":"N"
+            }
+          }]"""
+        }
+      },
+      "alert_manager_webhook_2": {
+        "webhook": {
+          "scheme": "http",
+          "host": "am-02.prod.alertmanager.dcsg.com",
+          "port": 9093,
+          "method": "post",
+          "path": "/api/v2/alerts",
+          "params": {},
+          "headers": {
+            "Content-Type": "application/json"
+          },
+          "body": """[{
+            "labels":{
+              "alertname":"Error Writing Discounts",
+              "alert_source":"kibana_alert",
+              "supportGroup":"Tech-CustomerOrders",
+              "cre_support_group":"Tech-RE-Athlete",
+              "severity":"Low", 
+              "use_arc":"Y"
+            },
+            "annotations":{
+              "summary":"There was an Error writing to co-discounts",
+              "dashboard_link":"https://kibana.creelastic.dcsg.com/goto/0fc66340-e698-11ec-9abf-9f90f7d76260",
+              "sopLink":"TBD",
+              "destinations":"Tech-CustomerOrders-Low",
+              "description": "There was an occurance of the message Error writing discounts to co-discounts topic and it needs to be checked out",
+              "ctdIDs":"28",
+              "arc_action":"teams",
+              "arc_event_only":"N"
+            }
+          }]"""
+        }
+      }
+    },
+    "metadata": {
+        "product_team": "Athlete Order",
+        "cre": "Don Coco",
+        "ctdID": [
+           28
+         ]
+       }
+    
+}
