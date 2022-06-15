@@ -1,0 +1,17 @@
+Hi Don,
+
+Wondering if you could help us with a new returns alert? On average we have 10-20 returns failures in returns-processor from non-POS returns. 2 or 3 weeks ago we had a spike from a change we had made in prod and I just happened to notice it when checking Kibana 3 days later, but hoping to have an alert set so we catch it earlier. Here’s the kibana link for the query to be listening to:
+
+https://kibana.creelastic.dcsg.com/goto/b24ac900-eca4-11ec-b9b4-cf9bf542d7d9
+
+Could you have it set every morning like 8am to look back 24 hours and if there are more than 60 failures to alert the high AO alert room. 
+
+I lost the alert template you had sent us, so here’s what I can remember you need, but let me know if there’s anything else:
+
+Title: “Returns-processor failure spike over the last 24 hours”
+Description: “There have been more than 60 non-POS returns failures in the last 24 hours when a normal amount is around 20 failures per day. Have an AO engineer look at the logs and research why, potentially alerting Sales Audit and replaying the failed returns after a fix” (include the kibana link above)
+L2: no
+
+Thanks!
+
+Dan
