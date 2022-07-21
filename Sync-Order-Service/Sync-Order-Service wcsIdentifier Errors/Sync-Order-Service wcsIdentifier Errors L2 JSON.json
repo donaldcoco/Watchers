@@ -71,7 +71,28 @@
 				"headers": {
 					"Content-Type": "application/json"
 				},
-				"body": "[{\"labels\":{\"alertname\":\"Sync-Order-Service wcsIdentifier Errors\",\"L2_Alerts\":\"Y\",\"Priority\":\"Medium\",\"org_name\":\"customer-order\",\"app_name\":\"sync-order-service\", \"link_to_kibana\":\"https://kibana.creelastic.dcsg.com/goto/75e5b93ec054548f87910460241c369d\",\"supportGroup\":\"Tech-CustomerOrders\",\"sopLink\":\"Restart the offending instance and if it doesn't clear up X-Matters customer-order\",\"to_cre\": \"Y\"},\"annotations\":{\"summary\":\"Too many errors in the wcsIdendifier over the last 45 minutes\",\"description\":\"The wcsIdentifier has had more than 100 errors over the last 45 minutes.\"}}]"
+				"body": """[{
+					"labels":{
+					  "alertname":"Sync-Order-Service wcsIdentifier Errors",
+					  "alert_source":"kibana_alert",
+					  "supportGroup":"Tech-CustomerOrders",
+					  "cre_support_group":"Tech-RE-Athlete",
+					  "severity":"Medium", 
+					  "use_arc":"Y"
+					},
+					"annotations":{
+					  "summary":"Too many errors in the wcsIdendifier over the last 45 minutes",
+					  "dashboard_link":"https://kibana.creelastic.dcsg.com/goto/75e5b93ec054548f87910460241c369d",
+					  "sopLink":"Restart the offending instance and if it doesn't clear up X-Matters customer-order",
+					  "destinations":"Tech-CustomerOrders",
+					  "description": "The wcsIdentifier has had more than 100 errors over the last 45 minutes.",
+					  "ctdIDs":"27",
+					  "arc_action":"teams,jira",
+					  "jira_impact":"Minor",
+					  "jira_urgency":"Low",
+					  "arc_event_only":"N"
+					}
+				  }]"""
 			}
 		},
 		"alert_manager_webhook_2": {
@@ -85,7 +106,28 @@
 				"headers": {
 					"Content-Type": "application/json"
 				},
-				"body": "[{\"labels\":{\"alertname\":\"Sync-Order-Service wcsIdentifier Errors\",\"L2_Alerts\":\"Y\",\"Priority\":\"Medium\",\"org_name\":\"customer-order\",\"app_name\":\"sync-order-service\", \"link_to_kibana\":\"https://kibana.creelastic.dcsg.com/goto/75e5b93ec054548f87910460241c369d\",\"supportGroup\":\"Tech-CustomerOrders\",\"sopLink\":\"Restart the offending instance and if it doesn't clear up X-Matters customer-order\",\"to_cre\": \"Y\"},\"annotations\":{\"summary\":\"Too many errors in the wcsIdendifier over the last 45 minutes\",\"description\":\"The wcsIdentifier has had more than 100 errors over the last 45 minutes.\"}}]"
+				"body": """[{
+					"labels":{
+					  "alertname":"Sync-Order-Service wcsIdentifier Errors",
+					  "alert_source":"kibana_alert",
+					  "supportGroup":"Tech-CustomerOrders",
+					  "cre_support_group":"Tech-RE-Athlete",
+					  "severity":"Medium", 
+					  "use_arc":"Y"
+					},
+					"annotations":{
+					  "summary":"Too many errors in the wcsIdendifier over the last 45 minutes",
+					  "dashboard_link":"https://kibana.creelastic.dcsg.com/goto/75e5b93ec054548f87910460241c369d",
+					  "sopLink":"Restart the offending instance and if it doesn't clear up X-Matters customer-order",
+					  "destinations":"Tech-CustomerOrders",
+					  "description": "The wcsIdentifier has had more than 100 errors over the last 45 minutes.",
+					  "ctdIDs":"27",
+					  "arc_action":"teams,jira",
+					  "jira_impact":"Minor",
+					  "jira_urgency":"Low",
+					  "arc_event_only":"N"
+					}
+				  }]"""
 			}
 		}
 	},

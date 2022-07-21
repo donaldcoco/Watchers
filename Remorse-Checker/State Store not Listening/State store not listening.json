@@ -73,7 +73,28 @@
         "headers": {
           "Content-Type": "application/json"
         },
-        "body": "[{\"labels\":{\"alertname\":\"State Store not Listening\",\"L2_Alerts\":\"Y\",\"org_name\":\"customer-order\",\"app_name\":\"co-remorse-checker\", \"link_to_kibana\":\"https://kibana.creelastic.dcsg.com/goto/4439d095942e4fc0cb29ad1d3d6c21e8\",\"supportGroup\":\"Tech-CustomerOrders\",\"sopLink\":\"https://confluence.dcsg.com/display/PTCOM/Remorse+Process\",\"to_cre\": \"Y\"},\"annotations\":{\"summary\":\"Orders not added to fulfillready store, restart the application and if error persist X-Matter\",\"description\":\"Error persisting order in Rocksdb\"}}]"
+        "body": """[{
+          "labels":{
+            "alertname":"State Store not Listening",
+            "alert_source":"kibana_alert",
+            "supportGroup":"Tech-CustomerOrders",
+            "cre_support_group":"Tech-RE-Athlete",
+            "severity":"Medium", 
+            "use_arc":"Y"
+          },
+          "annotations":{
+            "summary":"Orders not added to fulfillready store, restart the application and if error persist X-Matter",
+            "dashboard_link":"https://kibana.creelastic.dcsg.com/goto/4439d095942e4fc0cb29ad1d3d6c21e8",
+            "sopLink":"https://confluence.dcsg.com/display/PTCOM/Remorse+Process",
+            "destinations":"Tech-CustomerOrders",
+            "description": "Error persisting order in Rocksdb",
+            "ctdIDs":"28",
+            "arc_action":"teams,jira",
+            "jira_impact":"Significant",
+            "jira_urgency":"Medium",
+            "arc_event_only":"N"
+          }
+        }]"""
       }
     },
     "alert_manager_webhook_2": {
@@ -87,8 +108,36 @@
         "headers": {
           "Content-Type": "application/json"
         },
-        "body": "[{\"labels\":{\"alertname\":\"State Store not Listening\",\"L2_Alerts\":\"Y\",\"org_name\":\"customer-order\",\"app_name\":\"co-remorse-checker\", \"link_to_kibana\":\"https://kibana.creelastic.dcsg.com/goto/4439d095942e4fc0cb29ad1d3d6c21e8\",\"supportGroup\":\"Tech-CustomerOrders\",\"sopLink\":\"https://confluence.dcsg.com/display/PTCOM/Remorse+Process\",\"to_cre\": \"Y\"},\"annotations\":{\"summary\":\"Orders not added to fulfillready store, restart the application and if error persist X-Matter\",\"description\":\"Error persisting order in Rocksdb\"}}]"
+        "body": """[{
+          "labels":{
+            "alertname":"State Store not Listening",
+            "alert_source":"kibana_alert",
+            "supportGroup":"Tech-CustomerOrders",
+            "cre_support_group":"Tech-RE-Athlete",
+            "severity":"Medium", 
+            "use_arc":"Y"
+          },
+          "annotations":{
+            "summary":"Orders not added to fulfillready store, restart the application and if error persist X-Matter",
+            "dashboard_link":"https://kibana.creelastic.dcsg.com/goto/4439d095942e4fc0cb29ad1d3d6c21e8",
+            "sopLink":"https://confluence.dcsg.com/display/PTCOM/Remorse+Process",
+            "destinations":"Tech-CustomerOrders",
+            "description": "Error persisting order in Rocksdb",
+            "ctdIDs":"28",
+            "arc_action":"teams,jira",
+            "jira_impact":"Significant",
+            "jira_urgency":"Medium",
+            "arc_event_only":"N"
+          }
+        }]"""
       }
     }
-  }
+  },
+  "metadata": {
+      "product_team": "CustomerOrders",
+      "cre": "Don Coco",
+      "ctdID": [
+        28
+      ]
+    }
 }

@@ -73,7 +73,28 @@
         "headers": {
           "Content-Type": "application/json"
         },
-        "body": "[{\"labels\":{\"alertname\":\"Error Parsing for Key\",\"L2_Alerts\":\"Y\",\"org_name\":\"customer-order\",\"app_name\":\"co-remorse-checker\", \"link_to_kibana\":\"https://kibana.creelastic.dcsg.com/goto/8a47f90dacf706040537fa4c4fe932e9\",\"supportGroup\":\"Tech-CustomerOrders\",\"sopLink\":\"https://confluence.dcsg.com/display/PTCOM/Remorse+Process\",\"to_cre\": \"Y\"},\"annotations\":{\"summary\":\"Check to see if orders are flowing through co-remorse-checker If not, please restart the affected instance and X-Matters if it doesn't correct itself.\",\"description\":\"Error parsing remorse event for key.\"}}]"
+        "body": """[{
+          "labels":{
+            "alertname":"Error Parsing for Key",
+            "alert_source":"kibana_alert",
+            "supportGroup":"Tech-CustomerOrders",
+            "cre_support_group":"Tech-RE-Athlete",
+            "severity":"Medium", 
+            "use_arc":"Y"
+          },
+          "annotations":{
+            "summary":"Check to see if orders are flowing through co-remorse-checker If not, please restart the affected instance and X-Matters if it doesn't correct itself.",
+            "dashboard_link":"https://kibana.creelastic.dcsg.com/goto/8a47f90dacf706040537fa4c4fe932e9",
+            "sopLink":"https://confluence.dcsg.com/display/PTCOM/Remorse+Process",
+            "destinations":"Tech-CustomerOrders",
+            "description": "Error parsing remorse event for key.",
+            "ctdIDs":"28",
+            "arc_action":"teams,jira",
+            "jira_impact":"Significant",
+            "jira_urgency":"Medium",
+            "arc_event_only":"N"
+          }
+        }]"""
       }
     },
     "alert_manager_webhook_2": {
@@ -87,8 +108,36 @@
         "headers": {
           "Content-Type": "application/json"
         },
-        "body": "[{\"labels\":{\"alertname\":\"Error Parsing for Key\",\"L2_Alerts\":\"Y\",\"org_name\":\"customer-order\",\"app_name\":\"co-remorse-checker\", \"link_to_kibana\":\"https://kibana.creelastic.dcsg.com/goto/8a47f90dacf706040537fa4c4fe932e9\",\"supportGroup\":\"Tech-CustomerOrders\",\"sopLink\":\"https://confluence.dcsg.com/display/PTCOM/Remorse+Process\",\"to_cre\": \"Y\"},\"annotations\":{\"summary\":\"Check to see if orders are flowing through co-remorse-checker If not, please restart the affected instance and X-Matters if it doesn't correct itself.\",\"description\":\"Error parsing remorse event for key.\"}}]"
+        "body": """[{
+          "labels":{
+            "alertname":"Error Parsing for Key",
+            "alert_source":"kibana_alert",
+            "supportGroup":"Tech-CustomerOrders",
+            "cre_support_group":"Tech-RE-Athlete",
+            "severity":"Medium", 
+            "use_arc":"Y"
+          },
+          "annotations":{
+            "summary":"Check to see if orders are flowing through co-remorse-checker If not, please restart the affected instance and X-Matters if it doesn't correct itself.",
+            "dashboard_link":"https://kibana.creelastic.dcsg.com/goto/8a47f90dacf706040537fa4c4fe932e9",
+            "sopLink":"https://confluence.dcsg.com/display/PTCOM/Remorse+Process",
+            "destinations":"Tech-CustomerOrders",
+            "description": "Error parsing remorse event for key.",
+            "ctdIDs":"28",
+            "arc_action":"teams,jira",
+            "jira_impact":"Significant",
+            "jira_urgency":"Medium",
+            "arc_event_only":"N"
+          }
+        }]"""
       }
     }
-  }
+  },
+  "metadata": {
+		"product_team": "CustomerOrders",
+		"cre": "Don Coco",
+		"ctdID": [
+			28
+		]
+	}
 }

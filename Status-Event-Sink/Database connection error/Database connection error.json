@@ -80,7 +80,28 @@
         "headers": {
           "Content-Type": "application/json"
         },
-        "body": "[{\"labels\":{\"alertname\":\"Database Connection Error\",\"L2_Alerts\":\"Y\",\"org_name\":\"customer-order\",\"app_name\":\"co-status-event-sink\", \"link_to_kibana\":\"https://kibana.creelastic.dcsg.com/goto/e852450e8ca43ea26cc41dc0b3130fdb\",\"supportGroup\":\"Tech-CustomerOrders\",\"SOP\":\"Restart the source instance if the issue doesn't clear up in 30 mins X-Matter customer-order\",\"to_cre\": \"Y\"},\"annotations\":{\"summary\":\"This might affect shipments being fulfilled please restart the source instance to resume flow.\",\"description\":\"Transient Error while connecting to DB\"}}]"
+        "body": """[{
+          "labels":{
+            "alertname":"Database Connection Error",
+            "alert_source":"kibana_alert",
+            "supportGroup":"Tech-CustomerOrders",
+            "cre_support_group":"Tech-RE-Athlete",
+            "severity":"Medium", 
+            "use_arc":"Y"
+          },
+          "annotations":{
+            "summary":"This might affect shipments being fulfilled please restart the source instance to resume flow.",
+            "dashboard_link":"https://kibana.creelastic.dcsg.com/goto/e852450e8ca43ea26cc41dc0b3130fdb",
+            "sopLink":"Restart the source instance if the issue doesn't clear up in 30 mins X-Matter Tech-CustomerOrders",
+            "destinations":"Tech-CustomerOrders",
+            "description": "Transient Error while connecting to DB",
+            "ctdIDs":"27",
+            "arc_action":"teams,jira",
+            "jira_impact":"Medium",
+            "jira_urgency":"Significant",
+            "arc_event_only":"N"
+          }
+        }]"""
       }
     },
     "alert_manager_webhook_2": {
@@ -94,8 +115,36 @@
         "headers": {
           "Content-Type": "application/json"
         },
-        "body": "[{\"labels\":{\"alertname\":\"Database Connection Error\",\"L2_Alerts\":\"Y\",\"org_name\":\"customer-order\",\"app_name\":\"co-status-event-sink\", \"link_to_kibana\":\"https://kibana.creelastic.dcsg.com/goto/e852450e8ca43ea26cc41dc0b3130fdb\",\"supportGroup\":\"Tech-CustomerOrders\",\"SOP\":\"Restart the source instance if the issue doesn't clear up in 30 mins X-Matter customer-order\",\"to_cre\": \"Y\"},\"annotations\":{\"summary\":\"This might affect shipments being fulfilled please restart the source instance to resume flow.\",\"description\":\"Transient Error while connecting to DB\"}}]"
+        "body": """[{
+          "labels":{
+            "alertname":"Database Connection Error",
+            "alert_source":"kibana_alert",
+            "supportGroup":"Tech-CustomerOrders",
+            "cre_support_group":"Tech-RE-Athlete",
+            "severity":"Medium", 
+            "use_arc":"Y"
+          },
+          "annotations":{
+            "summary":"This might affect shipments being fulfilled please restart the source instance to resume flow.",
+            "dashboard_link":"https://kibana.creelastic.dcsg.com/goto/e852450e8ca43ea26cc41dc0b3130fdb",
+            "sopLink":"Restart the source instance if the issue doesn't clear up in 30 mins X-Matter Tech-CustomerOrders",
+            "destinations":"Tech-CustomerOrders",
+            "description": "Transient Error while connecting to DB",
+            "ctdIDs":"27",
+            "arc_action":"teams,jira",
+            "jira_impact":"Medium",
+            "jira_urgency":"Significant",
+            "arc_event_only":"N"
+          }
+        }]"""
       }
     }
-  }
+  },
+  "metadata": {
+		"product_team": "CustomerOrders",
+		"cre": "Don Coco",
+		"ctdID": [
+			27
+		]
+	}
 }
