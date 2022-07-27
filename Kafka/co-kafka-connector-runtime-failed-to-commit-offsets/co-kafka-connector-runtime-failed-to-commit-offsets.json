@@ -1,0 +1,142 @@
+{
+    "trigger": {
+      "schedule": {
+        "cron": "0 * * ? * *"  
+      }
+    },
+    "input": {
+      "search": {
+        "request": {
+          "search_type": "query_then_fetch",
+          "indices": [   
+            "kafka_connectors_logs"                                   
+          ],
+          "rest_total_hits_as_int": true,
+          "body": {
+            "size": 0,
+            "query": {
+              "bool": {                                                  
+                "must": [],
+                "filter": [                           
+                  {
+                    "bool": {
+                      "should": [
+                        {
+                          "match_phrase": {
+                            "message.text": "failed to commit offsets"
+                          }
+                        },
+                        {
+                          "match_phrase": {
+                            "message.text": "co"
+                          }
+                        }
+                      ],
+                      "minimum_should_match": 2
+                    }
+                  },
+                  {
+                    "range": {                                            
+                      "@timestamp": {
+                        "gte": "now-5m",
+                        "format": "epoch_millis"
+                      }
+                    }
+                  }
+                ],
+                "should": [],
+                "must_not": []
+              }
+            }
+          }
+        }
+      }
+    },
+    "condition": {
+      "compare": {
+        "ctx.payload.hits.total": {                                          
+          "gte": 100
+        }
+      }
+    },
+    "actions": {
+      "alert_manager_webhook_1": {
+        "webhook": {
+          "scheme": "http",
+          "host": "am-01.prod.alertmanager.dcsg.com",
+          "port": 9093,
+          "method": "post",
+          "path": "/api/v2/alerts",
+          "params": {},
+          "headers": {
+            "Content-Type": "application/json"
+          },
+          "body": """[{
+            "labels":{
+              "alertname":"co-kafka-connector-runtime-failed-to-commit-offsets",
+              "alert_source":"kibana_alert",
+              "supportGroup":"Tech-PlatformIntegration",
+              "cre_support_group":"Tech-RE-Athlete",
+              "severity":"Medium", 
+              "use_arc":"Y"
+            },
+            "annotations":{
+              "summary":"Customer Order Kafka Connectors are having issues writing offsets",
+              "dashboard_link":"https://kibana.creelastic.dcsg.com/goto/346ea7b0-0dcc-11ed-9abf-9f90f7d76260",
+              "sopLink":"https://confluence.dcsg.com/display/AO/Order+Flow+Impacting+Alert+SOP",
+              "destinations":"platform_integration_kafka",
+              "description": "The query behind this alert measures customer order kafka DB connector failures in writing offsets.  This means the connector itself is not healthy and may need to be restarted.  Please follow the SOP provided.",
+              "ctdIDs":"321",
+              "arc_action":"teams",
+              "jira_impact":"Significant",
+              "jira_urgency":"Medium",
+              "arc_event_only":"N"
+            }
+          }]"""
+        }
+      },
+      "alert_manager_webhook_2": {
+        "webhook": {
+          "scheme": "http",
+          "host": "am-02.prod.alertmanager.dcsg.com",
+          "port": 9093,
+          "method": "post",
+          "path": "/api/v2/alerts",
+          "params": {},
+          "headers": {
+            "Content-Type": "application/json"
+          },
+          "body": """[{
+            "labels":{
+              "alertname":"co-kafka-connector-runtime-failed-to-commit-offsets",
+              "alert_source":"kibana_alert",
+              "supportGroup":"Tech-PlatformIntegration",
+              "cre_support_group":"Tech-RE-Athlete",
+              "severity":"Medium", 
+              "use_arc":"Y"
+            },
+            "annotations":{
+              "summary":"Customer Order Kafka Connectors are having issues writing offsets",
+              "dashboard_link":"https://kibana.creelastic.dcsg.com/goto/346ea7b0-0dcc-11ed-9abf-9f90f7d76260",
+              "sopLink":"https://confluence.dcsg.com/display/AO/Order+Flow+Impacting+Alert+SOP",
+              "destinations":"platform_integration_kafka",
+              "description": "The query behind this alert measures customer order kafka DB connector failures in writing offsets.  This means the connector itself is not healthy and may need to be restarted.  Please follow the SOP provided.",
+              "ctdIDs":"321",
+              "arc_action":"teams",
+              "jira_impact":"Significant",
+              "jira_urgency":"Medium",
+              "arc_event_only":"N"
+            }
+          }]"""
+        }
+      }
+    },
+    "metadata": {
+        "product_team": "platform-team",
+        "cre": "Don Coco",
+        "ctdID": [
+           321
+         ]
+       }
+    
+}

@@ -1,0 +1,142 @@
+{
+    "trigger": {
+      "schedule": {
+        "cron": "0 * * ? * *"  
+      }
+    },
+    "input": {
+      "search": {
+        "request": {
+          "search_type": "query_then_fetch",
+          "indices": [   
+            "kafka_connectors_logs"                                   
+          ],
+          "rest_total_hits_as_int": true,
+          "body": {
+            "size": 0,
+            "query": {
+              "bool": {                                                  
+                "must": [],
+                "filter": [                           
+                  {
+                    "bool": {
+                      "should": [
+                        {
+                          "match_phrase": {
+                            "message.text": "WorkerSinkTask{id=pc-"
+                          }
+                        },
+                        {
+                          "match_phrase": {
+                            "message.text": "Task is being killed and will not recover until manually restarted"
+                          }
+                        }
+                      ],
+                      "minimum_should_match": 2
+                    }
+                  },
+                  {
+                    "range": {                                            
+                      "@timestamp": {
+                        "gte": "now-60m",
+                        "format": "epoch_millis"
+                      }
+                    }
+                  }
+                ],
+                "should": [],
+                "must_not": []
+              }
+            }
+          }
+        }
+      }
+    },
+    "condition": {
+      "compare": {
+        "ctx.payload.hits.total": {                                          
+          "gte": 1
+        }
+      }
+    },
+    "actions": {
+      "alert_manager_webhook_1": {
+        "webhook": {
+          "scheme": "http",
+          "host": "am-01.prod.alertmanager.dcsg.com",
+          "port": 9093,
+          "method": "post",
+          "path": "/api/v2/alerts",
+          "params": {},
+          "headers": {
+            "Content-Type": "application/json"
+          },
+          "body": """[{
+            "labels":{
+              "alertname":"ProductCatalog-Kafka-Connector-task-killed-errors",
+              "alert_source":"kibana_alert",
+              "supportGroup":"Tech-MasterDataManagement",
+              "cre_support_group":"Tech-RE-Teammate",
+              "severity":"low", 
+              "use_arc":"Y"
+            },
+            "annotations":{
+              "summary":"ProductCatalog-Kafka-Connector-task-killed-errors",
+              "dashboard_link":"https://grafana.dcsg.com/d/kdRv4Ewnk/confluent-kafka-connect?orgId=1",
+              "sopLink":"Please check and start stopped Kafka Connectors",
+              "destinations":"l2_Alerts_CommandCenter",
+              "description": "ProductCatalog-Kafka-Connector-task-killed-errors",
+              "ctdIDs":"121",
+              "arc_action":"teams,jira",
+              "jira_impact":"Significant",
+              "jira_urgency":"Low",
+              "arc_event_only":"N"
+            }
+          }]"""
+        }
+      },
+      "alert_manager_webhook_2": {
+        "webhook": {
+          "scheme": "http",
+          "host": "am-02.prod.alertmanager.dcsg.com",
+          "port": 9093,
+          "method": "post",
+          "path": "/api/v2/alerts",
+          "params": {},
+          "headers": {
+            "Content-Type": "application/json"
+          },
+          "body": """[{
+            "labels":{
+              "alertname":"ProductCatalog-Kafka-Connector-task-killed-errors",
+              "alert_source":"kibana_alert",
+              "supportGroup":"Tech-MasterDataManagement",
+              "cre_support_group":"Tech-RE-Teammate",
+              "severity":"low", 
+              "use_arc":"Y"
+            },
+            "annotations":{
+              "summary":"ProductCatalog-Kafka-Connector-task-killed-errors",
+              "dashboard_link":"https://grafana.dcsg.com/d/kdRv4Ewnk/confluent-kafka-connect?orgId=1",
+              "sopLink":"Please check and start stopped Kafka Connectors",
+              "destinations":"l2_Alerts_CommandCenter",
+              "description": "ProductCatalog-Kafka-Connector-task-killed-errors",
+              "ctdIDs":"121",
+              "arc_action":"teams,jira",
+              "jira_impact":"Significant",
+              "jira_urgency":"Low",
+              "arc_event_only":"N"
+            }
+          }]"""
+        }
+      }
+    },
+    "metadata": {
+        "product_team": "ProductCatalog",
+        "cre": "Mike Bosco",
+        "ctdID": [
+           121
+         ]
+       }
+    
+}
