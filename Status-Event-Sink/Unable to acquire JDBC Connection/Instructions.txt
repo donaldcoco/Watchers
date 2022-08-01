@@ -13,3 +13,6 @@ Sakthi
 link from Sakthi:
 
 https://kibana.creelastic.dcsg.com/goto/51229ec0e41bc029d5774b837d4ba51a
+
+
+Old alert was to specific broadened the alert and added self healing. 8/1/22
