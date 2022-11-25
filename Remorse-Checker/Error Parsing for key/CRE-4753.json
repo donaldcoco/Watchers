@@ -49,6 +49,41 @@
               "should": [],
               "must_not": []
             }
+          },
+          "aggs": {
+            "cf_org_name": {
+              "terms": {
+                "field": "cf_org_name.keyword"
+              },
+              "aggs": {
+                "cf_space_name": {
+                  "terms": {
+                    "field": "cf_space_name.keyword"
+                  },
+                  "aggs": {
+                    "pcf_type": {
+                      "terms": {
+                        "field": "pcf_type.keyword"
+                      },
+                      "aggs": {
+                        "cf_app_name": {
+                          "terms": {
+                            "field": "cf_app_name.keyword"
+                          },
+                          "aggs": {
+                            "source_instance": {
+                              "terms": {
+                                "field": "source_instance.keyword"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -74,27 +109,34 @@
           "Content-Type": "application/json"
         },
         "body": """[{
-          "labels":{
-            "alertname":"Error Parsing for Key",
-            "alert_source":"kibana_alert",
-            "supportGroup":"Tech-CustomerOrders",
-            "cre_support_group":"Tech-RE-Athlete",
-            "severity":"Medium", 
-            "use_arc":"Y"
+          "labels": {
+              "alertname": "Error Parsing for Key",
+              "org_name": "{{#ctx.payload.aggregations.cf_org_name.buckets}}{{key}}{{/ctx.payload.aggregations.cf_org_name.buckets}}",
+              "app_name": "{{#ctx.payload.aggregations.cf_org_name.buckets}}{{cf_space_name.buckets.0.pcf_type.buckets.0.cf_app_name.buckets.0.key}}{{/ctx.payload.aggregations.cf_org_name.buckets}}",
+              "foundation": "{{#ctx.payload.aggregations.cf_org_name.buckets}}{{cf_space_name.buckets.0.pcf_type.buckets.0.key}}{{/ctx.payload.aggregations.cf_org_name.buckets}}",
+              "instance": "{{#ctx.payload.aggregations.cf_org_name.buckets}}{{cf_space_name.buckets.0.pcf_type.buckets.0.cf_app_name.buckets.0.source_instance.buckets.0.key}}{{/ctx.payload.aggregations.cf_org_name.buckets}}",
+              "supportGroup": "Tech-CustomerOrders",
+              "cre_support_group": "Tech-CRE-Athlete",
+              "l2_Alerts": "Y",
+              "to_cre": "Y",
+              "use_arc": "Y",
+              "log_message": "{{ctx.payload.hits.hits.0._source.message}}",
+              "dashboard_link": "https://kibana.creelastic.dcsg.com/goto/8a47f90dacf706040537fa4c4fe932e9",
+              "sopLink": "This instance needs to be restarted. There is an automated job in place to do this, please check to make sure it worked and if not restart the affected instance"
           },
-          "annotations":{
-            "summary":"Check to see if orders are flowing through co-remorse-checker If not, please restart the affected instance and X-Matters if it doesn't correct itself.",
-            "dashboard_link":"https://kibana.creelastic.dcsg.com/goto/8a47f90dacf706040537fa4c4fe932e9",
-            "sopLink":"https://confluence.dcsg.com/display/PTCOM/Remorse+Process",
-            "destinations":"Tech-CustomerOrders",
-            "description": "Error parsing remorse event for key.",
-            "ctdIDs":"28",
-            "arc_action":"teams,jira",
-            "jira_impact":"Significant",
-            "jira_urgency":"Medium",
-            "arc_event_only":"N"
+          "annotations": {
+              "arc_action": "jira,heal,teams",
+              "destinations": "Tech-CustomerOrders,Jira",
+              "awx_job_name": "term-pcf-instance",
+              "awx_env": "foundation={{#ctx.payload.aggregations.cf_org_name.buckets}}{{cf_space_name.buckets.0.pcf_type.buckets.0.key}}{{/ctx.payload.aggregations.cf_org_name.buckets}},org=customer-order,space=prod,app={{#ctx.payload.aggregations.cf_org_name.buckets}}{{cf_space_name.buckets.0.pcf_type.buckets.0.cf_app_name.buckets.0.key}}{{/ctx.payload.aggregations.cf_org_name.buckets}},instance_id={{#ctx.payload.aggregations.cf_org_name.buckets}}{{cf_space_name.buckets.0.pcf_type.buckets.0.cf_app_name.buckets.0.source_instance.buckets.0.key}}{{/ctx.payload.aggregations.cf_org_name.buckets}}",
+              "summary": "Check to see if orders are flowing through co-remorse-checker If not, please restart the affected instance and X-Matters if it doesn't correct itself.",
+              "description": "Error parsing remorse event for key.",
+              "ctdIDs":"28",
+              "jira_impact":"Significant",
+              "jira_urgency":"Medium",
+              "arc_event_only":"N"
           }
-        }]"""
+      }]"""
       }
     },
     "alert_manager_webhook_2": {
@@ -109,27 +151,34 @@
           "Content-Type": "application/json"
         },
         "body": """[{
-          "labels":{
-            "alertname":"Error Parsing for Key",
-            "alert_source":"kibana_alert",
-            "supportGroup":"Tech-CustomerOrders",
-            "cre_support_group":"Tech-RE-Athlete",
-            "severity":"Medium", 
-            "use_arc":"Y"
+          "labels": {
+              "alertname": "Error Parsing for Key",
+              "org_name": "{{#ctx.payload.aggregations.cf_org_name.buckets}}{{key}}{{/ctx.payload.aggregations.cf_org_name.buckets}}",
+              "app_name": "{{#ctx.payload.aggregations.cf_org_name.buckets}}{{cf_space_name.buckets.0.pcf_type.buckets.0.cf_app_name.buckets.0.key}}{{/ctx.payload.aggregations.cf_org_name.buckets}}",
+              "foundation": "{{#ctx.payload.aggregations.cf_org_name.buckets}}{{cf_space_name.buckets.0.pcf_type.buckets.0.key}}{{/ctx.payload.aggregations.cf_org_name.buckets}}",
+              "instance": "{{#ctx.payload.aggregations.cf_org_name.buckets}}{{cf_space_name.buckets.0.pcf_type.buckets.0.cf_app_name.buckets.0.source_instance.buckets.0.key}}{{/ctx.payload.aggregations.cf_org_name.buckets}}",
+              "supportGroup": "Tech-CustomerOrders",
+              "cre_support_group": "Tech-CRE-Athlete",
+              "l2_Alerts": "Y",
+              "to_cre": "Y",
+              "use_arc": "Y",
+              "log_message": "{{ctx.payload.hits.hits.0._source.message}}",
+              "dashboard_link": "https://kibana.creelastic.dcsg.com/goto/8a47f90dacf706040537fa4c4fe932e9",
+              "sopLink": "This instance needs to be restarted. There is an automated job in place to do this, please check to make sure it worked and if not restart the affected instance"
           },
-          "annotations":{
-            "summary":"Check to see if orders are flowing through co-remorse-checker If not, please restart the affected instance and X-Matters if it doesn't correct itself.",
-            "dashboard_link":"https://kibana.creelastic.dcsg.com/goto/8a47f90dacf706040537fa4c4fe932e9",
-            "sopLink":"https://confluence.dcsg.com/display/PTCOM/Remorse+Process",
-            "destinations":"Tech-CustomerOrders",
-            "description": "Error parsing remorse event for key.",
-            "ctdIDs":"28",
-            "arc_action":"teams,jira",
-            "jira_impact":"Significant",
-            "jira_urgency":"Medium",
-            "arc_event_only":"N"
+          "annotations": {
+              "arc_action": "jira,heal,teams",
+              "destinations": "Tech-CustomerOrders,Jira",
+              "awx_job_name": "term-pcf-instance",
+              "awx_env": "foundation={{#ctx.payload.aggregations.cf_org_name.buckets}}{{cf_space_name.buckets.0.pcf_type.buckets.0.key}}{{/ctx.payload.aggregations.cf_org_name.buckets}},org=customer-order,space=prod,app={{#ctx.payload.aggregations.cf_org_name.buckets}}{{cf_space_name.buckets.0.pcf_type.buckets.0.cf_app_name.buckets.0.key}}{{/ctx.payload.aggregations.cf_org_name.buckets}},instance_id={{#ctx.payload.aggregations.cf_org_name.buckets}}{{cf_space_name.buckets.0.pcf_type.buckets.0.cf_app_name.buckets.0.source_instance.buckets.0.key}}{{/ctx.payload.aggregations.cf_org_name.buckets}}",
+              "summary": "Check to see if orders are flowing through co-remorse-checker If not, please restart the affected instance and X-Matters if it doesn't correct itself.",
+              "description": "Error parsing remorse event for key.",
+              "ctdIDs":"28",
+              "jira_impact":"Significant",
+              "jira_urgency":"Medium",
+              "arc_event_only":"N"
           }
-        }]"""
+      }]"""
       }
     }
   },
