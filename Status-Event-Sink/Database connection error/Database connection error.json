@@ -56,6 +56,41 @@
               "should": [],
               "must_not": []
             }
+          },
+          "aggs": {
+            "cf_org_name": {
+              "terms": {
+                "field": "cf_org_name.keyword"
+              },
+              "aggs": {
+                "cf_space_name": {
+                  "terms": {
+                    "field": "cf_space_name.keyword"
+                  },
+                  "aggs": {
+                    "pcf_type": {
+                      "terms": {
+                        "field": "pcf_type.keyword"
+                      },
+                      "aggs": {
+                        "cf_app_name": {
+                          "terms": {
+                            "field": "cf_app_name.keyword"
+                          },
+                          "aggs": {
+                            "source_instance": {
+                              "terms": {
+                                "field": "source_instance.keyword"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -86,7 +121,7 @@
             "alert_source":"kibana_alert",
             "supportGroup":"Tech-CustomerOrders",
             "cre_support_group":"Tech-RE-Athlete",
-            "severity":"Medium", 
+            "severity":"Low", 
             "use_arc":"Y"
           },
           "annotations":{
@@ -96,8 +131,10 @@
             "destinations":"Tech-CustomerOrders",
             "description": "Transient Error while connecting to DB",
             "ctdIDs":"27",
-            "arc_action":"teams,jira",
-            "jira_impact":"Medium",
+            "arc_action":"teams,jira,heal",
+            "awx_job_name": "term-pcf-instance",
+            "awx_env": "foundation={{#ctx.payload.aggregations.cf_org_name.buckets}}{{cf_space_name.buckets.0.pcf_type.buckets.0.key}}{{/ctx.payload.aggregations.cf_org_name.buckets}},org=customer-order,space=prod,app={{#ctx.payload.aggregations.cf_org_name.buckets}}{{cf_space_name.buckets.0.pcf_type.buckets.0.cf_app_name.buckets.0.key}}{{/ctx.payload.aggregations.cf_org_name.buckets}},instance_id={{#ctx.payload.aggregations.cf_org_name.buckets}}{{cf_space_name.buckets.0.pcf_type.buckets.0.cf_app_name.buckets.0.source_instance.buckets.0.key}}{{/ctx.payload.aggregations.cf_org_name.buckets}}",
+            "jira_impact":"Low",
             "jira_urgency":"Significant",
             "arc_event_only":"N"
           }
@@ -121,7 +158,7 @@
             "alert_source":"kibana_alert",
             "supportGroup":"Tech-CustomerOrders",
             "cre_support_group":"Tech-RE-Athlete",
-            "severity":"Medium", 
+            "severity":"Low", 
             "use_arc":"Y"
           },
           "annotations":{
@@ -131,8 +168,10 @@
             "destinations":"Tech-CustomerOrders",
             "description": "Transient Error while connecting to DB",
             "ctdIDs":"27",
-            "arc_action":"teams,jira",
-            "jira_impact":"Medium",
+            "arc_action":"teams,jira,heal",
+            "awx_job_name": "term-pcf-instance",
+            "awx_env": "foundation={{#ctx.payload.aggregations.cf_org_name.buckets}}{{cf_space_name.buckets.0.pcf_type.buckets.0.key}}{{/ctx.payload.aggregations.cf_org_name.buckets}},org=customer-order,space=prod,app={{#ctx.payload.aggregations.cf_org_name.buckets}}{{cf_space_name.buckets.0.pcf_type.buckets.0.cf_app_name.buckets.0.key}}{{/ctx.payload.aggregations.cf_org_name.buckets}},instance_id={{#ctx.payload.aggregations.cf_org_name.buckets}}{{cf_space_name.buckets.0.pcf_type.buckets.0.cf_app_name.buckets.0.source_instance.buckets.0.key}}{{/ctx.payload.aggregations.cf_org_name.buckets}}",
+            "jira_impact":"Low",
             "jira_urgency":"Significant",
             "arc_event_only":"N"
           }

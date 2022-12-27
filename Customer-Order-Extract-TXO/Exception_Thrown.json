@@ -1,0 +1,146 @@
+{
+    "trigger": {
+      "schedule": {
+        "cron": "0 * * ? * *"  
+      }
+    },
+    "input": {
+      "search": {
+        "request": {
+          "search_type": "query_then_fetch",
+          "indices": [   
+            "pcf_app_customer-order"                                   
+          ],
+          "rest_total_hits_as_int": true,
+          "body": {
+            "size": 0,
+            "query": {
+              "bool": {                                                  
+                "must": [],
+                "filter": [                           
+                  {
+                    "bool": {
+                      "should": [
+                        {
+                          "match_phrase": {
+                            "message.text": "Exception thrown when sending a message with key"
+                          }
+                        },
+                        {
+                          "match_phrase": {
+                            "cf_app_name": "customer-order-extract-txo"
+                          }
+                        }
+                      ],
+                      "minimum_should_match": 2
+                    }
+                  },
+                  {
+                    "range": {                                            
+                      "@timestamp": {
+                        "gte": "now-30m",
+                        "format": "epoch_millis"
+                      }
+                    }
+                  }
+                ],
+                "should": [],
+                "must_not": []
+              }
+            }
+          }
+        }
+      }
+    },
+    "condition": {
+      "compare": {
+        "ctx.payload.hits.total": {                                          
+          "gt": 10
+        }
+      }
+    },
+    "actions": {
+      "alert_manager_webhook_1": {
+        "webhook": {
+          "scheme": "http",
+          "host": "am-01.prod.alertmanager.dcsg.com",
+          "port": 9093,
+          "method": "post",
+          "path": "/api/v2/alerts",
+          "params": {},
+          "headers": {
+            "Content-Type": "application/json"
+          },
+          "body": """[{
+            "labels":{
+              "alertname":"Exception Thrown",
+              "alert_source":"kibana_alert",
+              "supportGroup":"Tech-CustomerOrders",
+              "cre_support_group":"Tech-RE-Athlete",
+              "severity":"xxxx", 
+              "use_arc":"Y"
+            },
+            "annotations":{
+              "summary":"xxx",
+              "dashboard_link":"https://kibana.creelastic.dcsg.com/goto/7149af20-6cdd-11ed-ad71-6be2a9334f00",
+              "sopLink":"xxxx",
+              "destinations":"Tech-CustomerOrders",
+              "description": "xxxx",
+              "ctdIDs":"369",
+              "arc_action":"teams",
+              "jira_impact":"xxxx",
+              "jira_urgency":"xxxx",
+              "arc_event_only":"xxxx",
+              "awx_env":"xxxx",
+              "awx_job_name":"xxxx"
+            }
+          }]"""
+        }
+      },
+      "alert_manager_webhook_2": {
+        "webhook": {
+          "scheme": "http",
+          "host": "am-02.prod.alertmanager.dcsg.com",
+          "port": 9093,
+          "method": "post",
+          "path": "/api/v2/alerts",
+          "params": {},
+          "headers": {
+            "Content-Type": "application/json"
+          },
+          "body": """[{
+            "labels":{
+              "alertname":"xxxx",
+              "alert_source":"kibana_alert",
+              "supportGroup":"Tech-xxxx",
+              "cre_support_group":"Tech-RExxxx",
+              "severity":"xxxx", 
+              "use_arc":"xxxx"
+            },
+            "annotations":{
+              "summary":"xxx",
+              "dashboard_link":"xxxx",
+              "sopLink":"xxxx",
+              "destinations":"xxxx",
+              "description": "xxxx",
+              "ctdIDs":"xxxx",
+              "arc_action":"xxxx",
+              "jira_impact":"xxxx",
+              "jira_urgency":"xxxx",
+              "arc_event_only":"xxxx",
+              "awx_env":"xxxx",
+              "awx_job_name":"xxxx"
+            }
+          }]"""
+        }
+      }
+    },
+    "metadata": {
+        "product_team": "customer-order",
+        "cre": "Don Coco",
+        "ctdID": [
+           369
+         ]
+       }
+    
+}

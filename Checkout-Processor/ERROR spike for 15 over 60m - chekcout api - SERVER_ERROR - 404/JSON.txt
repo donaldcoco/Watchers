@@ -1,4 +1,4 @@
-{
+{   ####### DEPRECIATED USE MUTLITEAM WATCHER NOW ##########
   "trigger": {
     "schedule": {
       "interval": "5m"
