@@ -1,0 +1,151 @@
+{
+    "trigger": {
+      "schedule": {
+        "cron": "0 * * ? * *"  
+      }
+    },
+    "input": {
+      "search": {
+        "request": {
+          "search_type": "query_then_fetch",
+          "indices": [   
+            "pcf_app_customer-order"                                   
+          ],
+          "rest_total_hits_as_int": true,
+          "body": {
+            "size": 0,
+            "query": {
+              "bool": {                                                  
+                "must": [],
+                "filter": [                           
+                  {
+                    "bool": {
+                      "should": [
+                        {
+                          "match_phrase": {
+                            "message.text": "Error in sending data to kafka topic for key"
+                          }
+                        },
+                        {
+                          "match_phrase": {
+                            "level": "ERROR"
+                          }
+                        },
+                        {
+                          "match_phrase": {
+                            "cf_app_name": "customer-order"
+                          }
+                        },
+                        {
+                          "match_phrase": {
+                            "source_type": "APP/PROC/WEB"
+                          }
+                        }
+                      ],
+                      "minimum_should_match": 4
+                    }
+                  },
+                  {
+                    "range": {                                            
+                      "@timestamp": {
+                        "gte": "now-10m",
+                        "format": "epoch_millis"
+                      }
+                    }
+                  }
+                ],
+                "should": [],
+                "must_not": []
+              }
+            }
+          }
+        }
+      }
+    },
+    "condition": {
+      "compare": {
+        "ctx.payload.hits.total": {                                          
+          "gt": 50
+        }
+      }
+    },
+    "actions": {
+      "alert_manager_webhook_1": {
+        "webhook": {
+          "scheme": "http",
+          "host": "am-01.prod.alertmanager.dcsg.com",
+          "port": 9093,
+          "method": "post",
+          "path": "/api/v2/alerts",
+          "params": {},
+          "headers": {
+            "Content-Type": "application/json"
+          },
+          "body": """[{
+            "labels":{
+              "alertname":"customer-order-error-sending-data-to-Kafka",
+              "alert_source":"kibana_alert",
+              "supportGroup":"Tech-CustomerOrders",
+              "cre_support_group":"Tech-RE-Athlete",
+              "severity":"low", 
+              "use_arc":"Y"
+            },
+            "annotations":{
+              "summary":"customer-order cannot produce to Kafka",
+              "dashboard_link":"https://kibana.creelastic.dcsg.com/goto/2cad5960-9cc2-11ed-865c-eda1d782fa37",
+              "sopLink":"xxxx",
+              "destinations":"Tech-CustomerOrders",
+              "description": "Customer order cannot produce to Kafka. Please check logs and reach out to on call Tech-CustomerOrder if there is an issue",
+              "ctdIDs":"28",
+              "arc_event_only":"N"
+            }
+          }]"""
+        }
+      },
+      "alert_manager_webhook_2": {
+        "webhook": {
+          "scheme": "http",
+          "host": "am-02.prod.alertmanager.dcsg.com",
+          "port": 9093,
+          "method": "post",
+          "path": "/api/v2/alerts",
+          "params": {},
+          "headers": {
+            "Content-Type": "application/json"
+          },
+          "body": """[{
+            "labels":{
+              "alertname":"xxxx",
+              "alert_source":"kibana_alert",
+              "supportGroup":"Tech-xxxx",
+              "cre_support_group":"Tech-RExxxx",
+              "severity":"xxxx", 
+              "use_arc":"xxxx"
+            },
+            "annotations":{
+              "summary":"xxx",
+              "dashboard_link":"xxxx",
+              "sopLink":"xxxx",
+              "destinations":"xxxx",
+              "description": "xxxx",
+              "ctdIDs":"xxxx",
+              "arc_action":"xxxx",
+              "jira_impact":"xxxx",
+              "jira_urgency":"xxxx",
+              "arc_event_only":"xxxx",
+              "awx_env":"xxxx",
+              "awx_job_name":"xxxx"
+            }
+          }]"""
+        }
+      }
+    },
+    "metadata": {
+        "product_team": "CustomerOrders",
+        "cre": "Don Coco",
+        "ctdID": [
+           28
+         ]
+       }
+    
+}
